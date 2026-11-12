@@ -1,0 +1,98 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\HotelHup\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{4191CE80-7C7F-4BD8-969A-0457070E6281}|HotelHup.APPLICATION\\HotelHup.APPLICATION.csproj|d:\\hotelhup\\hotelhup.application\\services\\implementation\\reservationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4191CE80-7C7F-4BD8-969A-0457070E6281}|HotelHup.APPLICATION\\HotelHup.APPLICATION.csproj|solutionrelative:hotelhup.application\\services\\implementation\\reservationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4191CE80-7C7F-4BD8-969A-0457070E6281}|HotelHup.APPLICATION\\HotelHup.APPLICATION.csproj|d:\\hotelhup\\hotelhup.application\\services\\implementation\\folioservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4191CE80-7C7F-4BD8-969A-0457070E6281}|HotelHup.APPLICATION\\HotelHup.APPLICATION.csproj|solutionrelative:hotelhup.application\\services\\implementation\\folioservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AF93D369-7251-4C66-9617-5080E3982263}|HotelHup.INFRASTRUCTURE\\HotelHup.INFRASTRUCTURE.csproj|d:\\hotelhup\\hotelhup.infrastructure\\repos\\foliorepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AF93D369-7251-4C66-9617-5080E3982263}|HotelHup.INFRASTRUCTURE\\HotelHup.INFRASTRUCTURE.csproj|solutionrelative:hotelhup.infrastructure\\repos\\foliorepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8EAC07C8-536E-4FF3-B799-0B4E13AE63B1}|HotelHup\\HotelHup.API.csproj|d:\\hotelhup\\hotelhup\\data\\databaseseeder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8EAC07C8-536E-4FF3-B799-0B4E13AE63B1}|HotelHup\\HotelHup.API.csproj|solutionrelative:hotelhup\\data\\databaseseeder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "FolioRepo.cs",
+              "DocumentMoniker": "D:\\HotelHup\\HotelHup.INFRASTRUCTURE\\repos\\FolioRepo.cs",
+              "RelativeDocumentMoniker": "HotelHup.INFRASTRUCTURE\\repos\\FolioRepo.cs",
+              "ToolTip": "D:\\HotelHup\\HotelHup.INFRASTRUCTURE\\repos\\FolioRepo.cs",
+              "RelativeToolTip": "HotelHup.INFRASTRUCTURE\\repos\\FolioRepo.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAACUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-11T10:02:48.01Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "FolioService.cs",
+              "DocumentMoniker": "D:\\HotelHup\\HotelHup.APPLICATION\\services\\implementation\\FolioService.cs",
+              "RelativeDocumentMoniker": "HotelHup.APPLICATION\\services\\implementation\\FolioService.cs",
+              "ToolTip": "D:\\HotelHup\\HotelHup.APPLICATION\\services\\implementation\\FolioService.cs",
+              "RelativeToolTip": "HotelHup.APPLICATION\\services\\implementation\\FolioService.cs",
+              "ViewState": "AgIAANMCAAAAAAAAAADwv+cCAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-11T08:46:51.734Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ReservationService.cs",
+              "DocumentMoniker": "D:\\HotelHup\\HotelHup.APPLICATION\\services\\implementation\\ReservationService.cs",
+              "RelativeDocumentMoniker": "HotelHup.APPLICATION\\services\\implementation\\ReservationService.cs",
+              "ToolTip": "D:\\HotelHup\\HotelHup.APPLICATION\\services\\implementation\\ReservationService.cs",
+              "RelativeToolTip": "HotelHup.APPLICATION\\services\\implementation\\ReservationService.cs",
+              "ViewState": "AgIAAM0HAAAAAAAAAAAgwOoHAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-11T08:44:37.473Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DatabaseSeeder.cs",
+              "DocumentMoniker": "D:\\HotelHup\\HotelHup\\data\\DatabaseSeeder.cs",
+              "RelativeDocumentMoniker": "HotelHup\\data\\DatabaseSeeder.cs",
+              "ToolTip": "D:\\HotelHup\\HotelHup\\data\\DatabaseSeeder.cs",
+              "RelativeToolTip": "HotelHup\\data\\DatabaseSeeder.cs",
+              "ViewState": "AgIAAKQAAAAAAAAAAAAgwLcAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-11T05:24:13.134Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

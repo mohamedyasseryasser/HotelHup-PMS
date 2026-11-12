@@ -1,0 +1,11 @@
+@if (error()) {
+  <div class="folio-error" role="alert">{{ error() }}</div>
+} @else {
+  <button
+    type="button"
+    class="btn btn-primary folio-button"
+    (click)="open()"
+  >
+    فتح الحساب البنكي
+  </button>
+}

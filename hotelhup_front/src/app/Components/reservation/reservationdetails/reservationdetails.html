@@ -1,0 +1,916 @@
+
+<main class="details-page" dir="rtl">
+
+  <a routerLink="/reservations" 
+  [queryParams]="{propertyId: propertyId() }" class="back-link">
+    ← العودة إلى الحجوزات
+  </a>
+
+  @if (loading()) {
+
+    <div class="loading-card">
+      جارٍ تحميل تفاصيل الحجز...
+    </div>
+
+  }
+
+  @else if (reservation(); as res) {
+
+    <!-- Reservation Header -->
+    <header class="hero card border-0 shadow-sm">
+
+      <div>
+        <span class="eyebrow">
+          تفاصيل الحجز
+        </span>
+
+        <h1>
+          {{ res.guestName || 'ضيف غير مسمى' }}
+        </h1>
+
+       <p class="hero-dates">  <span>{{ res.checkOutDate | date:'dd MMM yyyy' }}</span>
+
+  <span class="arrow">←</span> 
+  <span>{{ res.checkInDate | date:'dd MMM yyyy' }}</span>
+</p> 
+
+      </div>
+
+      <div class="hero-side">
+
+        <div class="d-flex gap-2 align-items-center">
+
+          <span class="status-badge status-{{ res.status }}">
+            {{ label(res.status) }}
+          </span>
+@if (permissions.canUpdateReservation()) {
+
+          <a
+            class="btn btn-sm btn-light"
+            [routerLink]="['/reservations', res.id, 'edit']"
+            [queryParams]="{ propertyId: propertyId() }"
+          >
+            تعديل
+          </a>}
+
+        </div>
+
+        <strong>
+          {{ finalReservationTotal() | number:'1.2-2' }}
+        </strong>
+
+        <small>الإجمالي النهائي للحجز</small>
+
+      </div>
+
+    </header>
+
+    <!-- Alerts -->
+    @if (error()) {
+      <div class="alert alert-danger mt-2">
+        {{ error() }}
+      </div>
+    }
+
+    @if (success()) {
+      <div class="alert alert-success mt-2">
+        {{ success() }}
+      </div>
+    }
+
+    <!-- Main Layout -->
+    <div class="reservation-layout">
+
+      <!-- Main Content -->
+      <div class="reservation-content">
+
+        <!-- Reservation Information -->
+        <section class="card border-0 shadow-sm section-card info-card">
+          <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <strong>معلومات الحجز</strong>
+            <span class="text-muted small">
+             </span>
+          </div>
+
+          <div class="card-body">
+            <div class="stats-grid mb-4">
+              <div>
+                <small>الوصول</small>
+                <strong>{{ res.checkInDate | date:'dd/MM/yyyy' }}</strong>
+              </div>
+              <div>
+                <small>المغادرة</small>
+                <strong>{{ res.checkOutDate | date:'dd/MM/yyyy' }}</strong>
+              </div>
+              <div>
+                <small>عدد الليالي</small>
+                <strong>{{ totalNights() }}</strong>
+              </div>
+              <div>
+                <small>عدد الغرف</small>
+                <strong>{{ res.rooms.length }}</strong>
+              </div>
+              <div>
+                <small>بالغون</small>
+                <strong>{{ res.adults }}</strong>
+              </div>
+              <div>
+                <small>أطفال</small>
+                <strong>{{ res.children }}</strong>
+              </div>
+            </div>
+
+            <div class="price-summary" aria-label="ملخص سعر الحجز">
+              <div class="price-summary-header">
+                <div>
+                  <h5 class="mb-1">ملخص السعر</h5>
+                  <small class="text-muted">
+                    توضيح السعر قبل الخصم والضرائب والرسوم
+                  </small>
+                </div>
+                <span class="price-summary-currency">قيمة الحجز</span>
+              </div>
+
+              <div class="price-line">
+                <span>إجمالي أسعار الغرف قبل الخصم</span>
+                <strong>{{ roomsSubtotalBeforeDiscount() | number:'1.2-2' }}</strong>
+              </div>
+
+              <div class="price-line discount-line">
+                <span>الخصم</span>
+                <strong>- {{ totalDiscountAmount() | number:'1.2-2' }}</strong>
+              </div>
+
+              <div class="price-line subtotal-line">
+                <span>صافي الغرف قبل الضرائب</span>
+                <strong>{{ netRoomsBeforeTax() | number:'1.2-2' }}</strong>
+              </div>
+
+              <div class="price-line tax-line">
+                <span>
+                  الضريبة الشاملة داخل سعر الغرف
+                  <small>(Inclusive)</small>
+                </span>
+                <strong>{{ inclusiveTaxAmount() | number:'1.2-2' }}</strong>
+              </div>
+
+              <div class="price-line emphasized-line">
+                <span>إجمالي الغرف شامل الضريبة الشاملة</span>
+                <strong>{{ roomsIncludingInclusiveTax() | number:'1.2-2' }}</strong>
+              </div>
+
+              <div class="price-line">
+                <span>الرسوم</span>
+                <strong>{{ totalFees() | number:'1.2-2' }}</strong>
+              </div>
+
+              <div class="price-line tax-line">
+                <span>
+                  الضرائب غير الشاملة المضافة للسعر
+                  <small>(Exclusive)</small>
+                </span>
+                <strong>{{ exclusiveTaxAmount() | number:'1.2-2' }}</strong>
+              </div>
+
+              <div class="price-total-line">
+                <span>الإجمالي النهائي للحجز</span>
+                <strong>{{ finalReservationTotal() | number:'1.2-2' }}</strong>
+              </div>
+            </div>
+
+            <div class="tax-explanation mt-3">
+              <strong>طريقة الحساب:</strong>
+              صافي الغرف بعد الخصم + الضريبة الشاملة داخل السعر = إجمالي الغرف شامل الضريبة،
+              ثم تضاف الرسوم والضرائب غير الشاملة للوصول إلى الإجمالي النهائي.
+            </div>
+
+            @if (folioId()) {
+              <div class="folio-action mt-3">
+                <app-foliolist
+                  [folioId]="folioId()"
+                  [propertyId]="propertyId()"
+                ></app-foliolist>
+              </div>
+            }
+          </div>
+        </section>
+
+        <!-- Rooms -->
+        <section class="card border-0 shadow-sm section-card rooms-card">
+
+          <div class="card-header bg-white border-0">
+
+            <strong>الغرف</strong>
+
+            <span class="text-muted small">
+              {{ res.rooms.length }} assignments
+            </span>
+
+          </div>
+
+          <div class="table-responsive">
+
+            <table class="table align-middle mb-0">
+
+              <thead>
+                <tr>
+                  <th>الغرفة</th>
+                  <th>الليالي</th>
+                  <th>السعر</th>
+                  <th>الإجمالي</th>
+                  <th>الحالة</th>
+                  <th>الخصم</th>
+                  <th>الرسوم</th>
+                  <th></th>
+                </tr>
+              </thead>
+
+              <tbody>
+
+                @for (room of res.rooms; track room.id) {
+
+                  <tr>
+
+                    <td>
+                      <strong>
+                        {{ room.roomNumber || ('#' + room.roomId) }}
+                      </strong>
+                    </td>
+
+                    <td>{{ room.nights }}</td>
+
+                    <td>
+                      {{ room.nightlyRate | number:'1.2-2' }}
+                    </td>
+
+                    <td>
+                      {{ room.totalAmount | number:'1.2-2' }}
+                    </td>
+
+                    <td>
+
+                      <span
+                        class="room-state"
+                        [class.active-room]="room.isCurrent"
+                      >
+                        {{ room.isCurrent ? 'حالية' : 'سابقة' }}
+                      </span>
+
+                    </td>
+                  <td>{{room.discountAmount}}</td>
+                  <td>{{room.feeAmount}}</td>
+                    <td>
+
+                      @if (
+                        room.isCurrent &&
+                        res.status === statuses.CheckedIn&&permissions.canModifyReservation()
+                      ) {
+
+                        <button
+                          class="btn btn-sm btn-outline-danger"
+                          (click)="release(room.roomId)"
+                          [disabled]="saving()"
+                        >
+                          تحرير
+                        </button>
+
+                      }
+
+                    </td>
+
+                  </tr>
+
+                }
+
+                @empty {
+
+                  <tr>
+                    <td colspan="8" class="text-center text-muted py-3">
+                      لا توجد غرف مرتبطة بالحجز.
+                    </td>
+                  </tr>
+
+                }
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </section>
+
+        <!-- Status History -->
+        <section class="card border-0 shadow-sm section-card history-card">
+
+          <div class="card-header bg-white border-0">
+            <strong>سجل الحالة</strong>
+          </div>
+
+          <div class="timeline">
+
+            @for (item of history(); track item.id) {
+
+              <div class="timeline-item">
+
+                <span></span>
+
+                <div>
+
+                  <strong>
+                    {{ label(item.toStatus) }}
+                  </strong>
+
+                  <small>
+                    {{ item.changedAt | date:'dd MMM yyyy, HH:mm' }}
+                    ·
+                    {{ item.reason || 'بدون سبب' }}
+                  </small>
+
+                </div>
+
+              </div>
+
+            }
+
+            @empty {
+
+              <p class="text-muted mb-0">
+                لا يوجد سجل حالات.
+              </p>
+
+            }
+
+          </div>
+
+        </section>
+
+      </div>
+
+      <!-- Actions -->
+      <div class="reservation-actions">
+
+        <section class="actions-card card border-0 shadow-sm">
+
+          <div class="card-header bg-white border-0">
+            <strong>إجراءات الحجز</strong>
+          </div>
+
+          <div class="card-body">
+
+            <div class="action-grid">
+
+              @if (
+                res.status === statuses.Pending &&
+permissions.canModifyReservation()              ) {
+
+                <button
+                  class="action action-blue"
+                  (click)="action.set('confirm')"
+                >
+                  تأكيد الحجز
+                </button>
+
+              }
+
+              @if (
+                (
+                  res.status === statuses.Pending ||
+                  res.status === statuses.Confirmed
+                ) &&
+permissions.canModifyReservation()              ) {
+
+                <button
+                  class="action action-purple"
+(click)="openAssignRoom(res)"
+                >
+                  تعيين غرفة
+                </button>
+
+              }
+
+              @if (
+                res.status === statuses.Confirmed &&
+permissions.canModifyReservation()              ) {
+
+                <button
+                  class="action action-green"
+                  (click)="action.set('checkin')"
+                >
+                  تسجيل الدخول
+                </button>
+
+              }
+
+              @if (
+                res.status === statuses.CheckedIn &&
+permissions.canModifyReservation()              ) {
+
+                <button
+                  class="action action-purple"
+                  (click)="action.set('checkout')"
+                >
+                  تسجيل الخروج
+                </button>
+@if (permissions.canModifyReservation()) {
+
+                <button
+                  class="action action-blue"
+                  (click)="action.set('extend')"
+                >
+                  تمديد الإقامة
+                </button>
+              }@if (permissions.canModifyReservation()) {
+
+                <button
+                  class="action action-orange"
+                  (click)="action.set('early')"
+                >
+                  خروج مبكر
+                </button>
+              }
+              }
+
+              @if (
+                (
+                  res.status === statuses.Pending ||
+                  res.status === statuses.Confirmed
+                ) &&
+permissions.canModifyReservation()              ) {
+
+                <button
+                  class="action action-red"
+                  (click)="action.set('noshow')"
+                >
+                  لم يحضر
+                </button>
+
+              }
+
+              @if (
+                (
+                  res.status === statuses.Pending ||
+                  res.status === statuses.Confirmed
+                ) &&
+permissions.canCancelReservation()              ) {
+
+                <button
+                  class="action action-red"
+                  (click)="action.set('cancel')"
+                >
+                  إلغاء الحجز
+                </button>
+
+              }
+
+            </div>
+
+            <!-- Action Form -->
+            @if (action()) {
+
+              <div class="action-form">
+
+                <div class="form-title">
+
+                  {{
+                    action() === 'confirm'
+                      ? 'تأكيد الحجز'
+                      : action() === 'cancel'
+                        ? 'إلغاء الحجز'
+                        : action() === 'noshow'
+                          ? 'تسجيل No-show'
+                          : action() === 'assign'
+                            ? 'تعيين غرفة'
+                            : action() === 'checkin'
+                              ? 'تسجيل الدخول'
+                              : action() === 'checkout'
+                                ? 'تسجيل الخروج'
+                                : action() === 'extend'
+                                  ? 'تمديد الإقامة'
+                                  : 'خروج مبكر'
+                  }}
+
+                </div>
+
+                <!-- Extend / Early Checkout -->
+                @if (
+                  action() === 'extend' ||
+                  action() === 'early'
+                ) {
+
+                  <label>تاريخ المغادرة</label>
+
+                  <input
+                    class="form-control mb-2"
+                    type="date"
+                    [ngModel]="newCheckout()"
+                    (ngModelChange)="newCheckout.set($event)"
+                    [min]="res.checkOutDate | date:'yyyy-MM-dd'"
+                  >
+
+                }
+
+                <!-- Assign Room -->
+               @if (action() === 'assign') {
+
+  <div class="row g-2 mb-2">
+
+    <div class="col-6">
+      <label for="assign-adults">
+        بالغون
+      </label>
+
+      <input
+        id="assign-adults"
+        class="form-control"
+        type="number"
+        min="1"
+        [ngModel]="adults()"
+        (ngModelChange)="setAdults($event)"
+      >
+    </div>
+
+    <div class="col-6">
+      <label for="assign-children">
+        أطفال
+      </label>
+
+      <input
+        id="assign-children"
+        class="form-control"
+        type="number"
+        min="0"
+        [ngModel]="children()"
+        (ngModelChange)="setChildren($event)"
+      >
+    </div>
+
+  </div>
+
+  <button
+    type="button"
+    class="btn btn-outline-secondary btn-sm w-100 mb-2"
+    (click)="getAvailableRooms(res)"
+    [disabled]="loadingRoomOptions() || saving()"
+  >
+    {{
+      loadingRoomOptions()
+        ? 'جارٍ البحث...'
+        : 'تحديث الغرف المتاحة'
+    }}
+  </button>
+
+  <label for="available-room">
+    الغرفة المتاحة
+  </label>
+
+  <select
+    id="available-room"
+    class="form-select mb-2"
+    [ngModel]="selectedRoomId()"
+    (ngModelChange)="
+      selectedRoomId.set($event ? +$event : null);
+      selectedRatePlanId.set(0)
+    "
+    [disabled]="loadingRoomOptions()"
+  >
+
+    <option [ngValue]="null">
+      اختر الغرفة
+    </option>
+
+    @for (
+      room of availableRooms();
+      track room.roomId
+    ) {
+      <option [ngValue]="room.roomId">
+        {{ room.roomNumber }}
+        -
+        {{ room.roomTypeName }}
+        -
+        {{ room.nightlyRate | number:'1.2-2' }}
+      </option>
+    }
+
+  </select>
+
+  @if (selectedRoom(); as room) {
+    <small class="text-muted d-block mb-2">
+      السعة:
+      {{ room.maxAdults }} بالغين
+      ·
+      {{ room.maxChildren }} أطفال
+    </small>
+  }
+
+  <label for="current-rate-plan">
+    خطة السعر الحالية
+  </label>
+
+  <select
+    id="current-rate-plan"
+    class="form-select mb-2"
+    [ngModel]="selectedRatePlanId()"
+    (ngModelChange)="selectedRatePlanId.set(+$event)"
+    [disabled]="!selectedRoom()"
+  >
+
+    <option [ngValue]="0">
+      اختر خطة السعر
+    </option>
+
+    @for (
+      plan of ratePlansForSelectedRoom();
+      track plan.id
+    ) {
+      <option [ngValue]="plan.id">
+        {{ plan.name }}
+        -
+        {{ plan.currentVersion?.price | number:'1.2-2' }}
+        -
+        v{{ plan.currentVersion?.versionNumber }}
+      </option>
+    }
+
+  </select>
+
+  @if (
+    !loadingRoomOptions() &&
+    availableRooms().length === 0
+  ) {
+    <div class="alert alert-warning py-2">
+      لا توجد غرف متاحة لهذه الفترة والسعة.
+    </div>
+  }
+
+}
+
+
+                <!-- Cancellation / No Show -->
+                @if (
+                  action() === 'cancel' ||
+                  action() === 'noshow'
+                ) {
+
+                  <div class="form-check mb-2">
+
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      [ngModel]="overridePolicy()"
+                      (ngModelChange)="overridePolicy.set($event)"
+                      id="override"
+                    >
+
+                    <label
+                      class="form-check-label"
+                      for="override"
+                    >
+                      تجاوز السياسة
+                    </label>
+
+                  </div>
+
+                }
+
+                <!-- Reason -->
+                @if (action() !== 'confirm') {
+
+                  <label>ملاحظات / السبب</label>
+
+                  <textarea
+                    class="form-control mb-2"
+                    rows="3"
+                    [ngModel]="reason()"
+                    (ngModelChange)="reason.set($event)"
+                    placeholder="اكتب سبب الإجراء"
+                  ></textarea>
+
+                }
+
+                <!-- Buttons -->
+                <div class="d-flex gap-2 mt-3">
+
+                  <button
+                    class="btn btn-primary flex-fill"
+                    (click)="run(action())"
+                    [disabled]="saving()"
+                  >
+                    {{
+                      saving()
+                        ? 'جارٍ التنفيذ...'
+                        : 'تأكيد'
+                    }}
+                  </button>
+
+                  <button
+                    class="btn btn-light"
+                    (click)="action.set('')"
+                    [disabled]="saving()"
+                  >
+                    إلغاء
+                  </button>
+
+                </div>
+
+              </div>
+
+            }
+
+          </div>
+
+        </section>
+
+      </div>
+
+    </div>
+
+  }
+
+    <!-- Reservation Snapshots - Full Page Width -->
+    @if (snapshots(); as snapshot) {
+      <section class="card border-0 shadow-sm section-card snapshots-card">
+        <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center flex-wrap gap-2">
+          <strong>سياسات وضرائب الحجز المحفوظة</strong>
+          <small class="text-muted">
+            تم الاسترجاع في:
+            {{ snapshot.retrievedAt | date:'dd/MM/yyyy HH:mm' }}
+          </small>
+        </div>
+
+        <div class="card-body">
+          <div class="snapshots-wide-grid">
+            <article class="snapshot-column">
+              <div class="snapshot-heading cancellation-heading">
+                <span class="snapshot-icon">×</span>
+                <div>
+                  <h6 class="mb-1">Cancellation Policy</h6>
+                  <small>سياسة الإلغاء المحفوظة</small>
+                </div>
+              </div>
+
+              @if (snapshot.cancellationPolicy; as cancellation) {
+                <div class="snapshot-content">
+                  <div class="snapshot-field">
+                    <span>اسم السياسة</span>
+                    <strong>{{ cancellation.policyName }}</strong>
+                  </div>
+                  <div class="snapshot-field">
+                    <span>الإلغاء المجاني</span>
+                    <strong>{{ cancellation.freeCancellationHours }} ساعة</strong>
+                  </div>
+                  <div class="snapshot-field">
+                    <span>نسبة الغرامة</span>
+                    <strong>{{ cancellation.cancellationFeePercentage }}%</strong>
+                  </div>
+                  <div class="snapshot-field">
+                    <span>الغرامة الثابتة</span>
+                    <strong>{{ cancellation.fixedCancellationFee | number:'1.2-2' }}</strong>
+                  </div>
+                  <div class="snapshot-field">
+                    <span>Cutoff</span>
+                    <strong>{{ cancellation.cutoffHours }} ساعة</strong>
+                  </div>
+                  <div class="snapshot-field">
+                    <span>Non-refundable</span>
+                    <strong
+                      [class.text-danger]="cancellation.isNonRefundable"
+                      [class.text-success]="!cancellation.isNonRefundable"
+                    >
+                      {{ cancellation.isNonRefundable ? 'نعم' : 'لا' }}
+                    </strong>
+                  </div>
+                  <div class="snapshot-rules">
+                    <span>القواعد</span>
+                    <p>{{ cancellation.rules }}</p>
+                  </div>
+                  <div class="snapshot-captured">
+                    تم الالتقاط في:
+                    {{ cancellation.capturedAt | date:'dd/MM/yyyy HH:mm' }}
+                  </div>
+                </div>
+              } @else {
+                <div class="empty-snapshot">
+                  لا توجد Cancellation Policy Snapshot.
+                </div>
+              }
+            </article>
+
+            <article class="snapshot-column">
+              <div class="snapshot-heading deposit-heading">
+                <span class="snapshot-icon">$</span>
+                <div>
+                  <h6 class="mb-1">Deposit Policy</h6>
+                  <small>سياسة العربون المحفوظة</small>
+                </div>
+              </div>
+
+              @if (snapshot.depositPolicy; as deposit) {
+                <div class="snapshot-content">
+                  <div class="snapshot-field">
+                    <span>اسم السياسة</span>
+                    <strong>{{ deposit.policyName }}</strong>
+                  </div>
+                  <div class="snapshot-field">
+                    <span>النوع</span>
+                    <strong>{{ deposit.type }}</strong>
+                  </div>
+                  <div class="snapshot-field">
+                    <span>المبلغ المطلوب</span>
+                    <strong>{{ deposit.requiredDepositAmount | number:'1.2-2' }}</strong>
+                  </div>
+                  <div class="snapshot-field">
+                    <span>المبلغ الثابت</span>
+                    <strong>{{ deposit.amount | number:'1.2-2' }}</strong>
+                  </div>
+                  <div class="snapshot-field">
+                    <span>النسبة</span>
+                    <strong>{{ deposit.percentage }}%</strong>
+                  </div>
+                  <div class="snapshot-captured">
+                    تم الالتقاط في:
+                    {{ deposit.capturedAt | date:'dd/MM/yyyy HH:mm' }}
+                  </div>
+                </div>
+              } @else {
+                <div class="empty-snapshot">
+                  لا توجد Deposit Policy Snapshot.
+                </div>
+              }
+            </article>
+
+            <article class="snapshot-column taxes-column">
+              <div class="snapshot-heading tax-heading">
+                <span class="snapshot-icon">%</span>
+                <div>
+                  <h6 class="mb-1">Tax Snapshots</h6>
+                  <small>الضرائب المحفوظة وقت إنشاء الحجز</small>
+                </div>
+              </div>
+
+              <div class="snapshot-content">
+                @if (snapshot.taxes.length > 0) {
+                  <div class="tax-list">
+                    @for (tax of snapshot.taxes; track tax.id) {
+                      <div class="tax-item">
+                        <div class="tax-item-header">
+                          <strong>{{ tax.taxName }}</strong>
+                          <span class="tax-code">{{ tax.taxCode }}</span>
+                        </div>
+
+                        <div class="tax-item-details">
+                          <div>
+                            <span>Rate</span>
+                            <strong>{{ tax.rate }}%</strong>
+                          </div>
+                          <div>
+                            <span>Taxable</span>
+                            <strong>{{ tax.taxableAmount | number:'1.2-2' }}</strong>
+                          </div>
+                          <div>
+                            <span>Tax</span>
+                            <strong class="text-primary">{{ tax.taxAmount | number:'1.2-2' }}</strong>
+                          </div>
+                          <div>
+                            <span>النوع</span>
+                            <strong>{{ tax.isInclusive ? 'شاملة' : 'غير شاملة' }}</strong>
+                          </div>
+                        </div>
+
+                        <div class="tax-validity">
+                          <span>
+                            من: {{ tax.taxValidFrom | date:'dd/MM/yyyy' }}
+                          </span>
+                          <span>
+                            إلى:
+                            @if (tax.taxValidTo) {
+                              {{ tax.taxValidTo | date:'dd/MM/yyyy' }}
+                            } @else {
+                              مفتوحة
+                            }
+                          </span>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                } @else {
+                  <div class="empty-snapshot">
+                    لا توجد ضرائب محفوظة.
+                  </div>
+                }
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+    }
+
+  @if (!loading() && !reservation()) {
+
+    <div class="alert alert-warning">
+      لم يتم العثور على الحجز.
+    </div>
+
+  }
+
+</main>
