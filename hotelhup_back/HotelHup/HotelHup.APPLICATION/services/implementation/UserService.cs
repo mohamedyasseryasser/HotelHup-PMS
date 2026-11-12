@@ -1,0 +1,1294 @@
+﻿using HotelHup.APPLICATION.Constant;
+using HotelHup.APPLICATION.DTO.aduitlog;
+using HotelHup.APPLICATION.DTO.General;
+using HotelHup.APPLICATION.DTO.role;
+using HotelHup.APPLICATION.DTO.user;
+using HotelHup.APPLICATION.interfacesrepo;
+using HotelHup.APPLICATION.services.interfaces;
+using HotelHup.CORE.Entities;
+using HotelHup.CORE.Enums;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Drawing;
+using System.Linq;
+using System.Numerics;
+using System.Reflection.Metadata;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
+using static HotelHup.APPLICATION.Constant.Permissions;
+
+namespace HotelHup.APPLICATION.services.implementation
+{
+
+    public sealed class UserService : IUserService
+    {
+        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly IUserRepository _repository;
+        private readonly IPropertyRepository propertyRepository;
+
+        public UserService(IHttpContextAccessor httpContextAccessor, IUserRepository repository,IPropertyRepository propertyRepository)
+        {
+            this.httpContextAccessor = httpContextAccessor;
+            _repository = repository;
+            this.propertyRepository = propertyRepository;
+        }
+
+        public async Task<ResponseStatus<PagedResponse<ResponseUserDto>>> GetListAsync(
+      User actor,
+      UserListRequestDto request,
+      CancellationToken cancellationToken = default)
+        {
+            if (actor is null)
+            {
+                return Failer<PagedResponse<ResponseUserDto>>(
+                    message: "Authenticated actor is required.",
+                    statusCode: 401);
+            }
+
+            if (!actor.IsActive)
+            {
+                return Failer<PagedResponse<ResponseUserDto>>(
+                    message: "The actor is inactive.",
+                    statusCode: 403);
+            }
+
+            if (request is null)
+            {
+                return Failer<PagedResponse<ResponseUserDto>>(
+                    message: "User list request is required.",
+                    statusCode: 400);
+            }
+
+            var actorRoles = await _repository.GetRolesAsync(
+                actor.Id,
+                cancellationToken);
+
+            var isAdmin = HasActiveRole(actorRoles, UserRole.Admin);
+            var isManager = HasActiveRole(actorRoles, UserRole.Manager);
+
+            if (!isAdmin && !isManager)
+            {
+                return Failer<PagedResponse<ResponseUserDto>>(
+                    message: "Only Admin or Manager can retrieve the user list.",
+                    statusCode: 403);
+            }
+
+            int? effectivePropertyId;
+
+            if (isAdmin)
+            {
+                 effectivePropertyId = request.PropertyId;
+            }
+            else
+            {
+                if (!actor.PropertyId.HasValue)
+                {
+                    return Failer<PagedResponse<ResponseUserDto>>(
+                        message: "Manager is not assigned to a property.",
+                        statusCode: 403);
+                }
+
+                if (request.PropertyId.HasValue &&
+                    request.PropertyId.Value != actor.PropertyId.Value)
+                {
+                    return Failer<PagedResponse<ResponseUserDto>>(
+                        message: "The requested property is outside your scope.",
+                        statusCode: 403);
+                }
+
+                 effectivePropertyId = actor.PropertyId.Value;
+            }
+
+            var pageNumber = Math.Max(request.pg?.PageNumber ?? 1, 1);
+            var pageSize = Math.Clamp(request.pg?.PageSize ?? 20, 1, 100);
+            var skip = (pageNumber - 1) * pageSize;
+
+            var users = await _repository.GetListAsync(
+                request.UserName?.Trim(),
+                request.FullName?.Trim(),
+                request.IsActive,
+                effectivePropertyId,
+                request.RoleId,
+                request.CreatedFrom,
+                request.CreatedTo,
+                skip,
+                pageSize,
+                cancellationToken);
+
+            var totalCount = await _repository.CountAsync(
+                request.UserName?.Trim(),
+                request.FullName?.Trim(),
+                request.IsActive,
+                effectivePropertyId,
+                request.RoleId,
+                request.CreatedFrom,
+                request.CreatedTo,
+                cancellationToken);
+
+            var items = new List<ResponseUserDto>(users.Count);
+
+            foreach (var user in users)
+            {
+                items.Add(await MapAsync(user, cancellationToken));
+            }
+
+            var data = new PagedResponse<ResponseUserDto>
+            {
+                Items = items,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                TotalCount = totalCount
+            };
+
+            return Success(data, "Users retrieved successfully.");
+        }
+
+
+        public async Task<ResponseStatus<ResponseUserDto>> GetByIdAsync(
+            User currentuser,
+            string userId,
+            CancellationToken cancellationToken = default)
+        {
+            if (currentuser is null)
+            {
+                return Failer<ResponseUserDto>(
+                    message: "Authenticated actor is required.",
+                    statusCode: 401);
+            }
+
+            if (!currentuser.IsActive)
+            {
+                return Failer<ResponseUserDto>(
+                    message: "The actor is inactive.",
+                    statusCode: 403);
+            }
+
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return Failer<ResponseUserDto>(
+                    message: "userid is empty",
+                    statusCode: 400);
+            }
+
+            var requestedUserId = userId.Trim();
+
+            var actorRoles = await _repository.GetRolesAsync(
+                currentuser.Id,
+                cancellationToken);
+
+            var isAdmin = HasActiveRole(actorRoles, UserRole.Admin);
+            var isManager = HasActiveRole(actorRoles, UserRole.Manager);
+
+             if (!isAdmin &&
+                !isManager &&
+                !string.Equals(
+                    currentuser.Id,
+                    requestedUserId,
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                return Failer<ResponseUserDto>(
+                    message: "User was not found.",
+                    statusCode: 404);
+            }
+           
+
+            var user = await _repository.GetByIdAsync(
+                requestedUserId,
+                cancellationToken);
+
+            if (user is null)
+            {
+                return Failer<ResponseUserDto>(
+                    message: "User was not found.",
+                    statusCode: 404);
+            }
+
+             if (!isAdmin &&
+                isManager &&
+                user.PropertyId != currentuser.PropertyId)
+             {
+                return Failer<ResponseUserDto>(
+                    message: "manager is not in scope property.",
+                    statusCode: 403);
+             }
+
+            return Success(
+                await MapAsync(user, cancellationToken),
+                "User retrieved successfully.");
+        }               
+
+
+        public async Task<ResponseStatus<ResponseUserDto>> CreateAsync(
+          User user, CreateUserRequestDto request,
+            CancellationToken cancellationToken = default)
+        {
+            if (request is null)
+            {
+                return Failer<ResponseUserDto>(
+                    "Request body is required.",
+                    statusCode: 400);
+            }
+            var actorPermissions = await _repository.GetPermissionNamesAsync(
+                user.Id,
+                cancellationToken);
+
+            if (!actorPermissions.Contains(Permissions.Users.Create))
+            {
+                return Failer<ResponseUserDto>(
+                    "User.Create permission is required to create users.",
+                    statusCode: 403);
+            }
+            var isGlobalAdmin = false;
+            if (!user.PropertyId.HasValue)
+            {
+                var actorRoles = await _repository.GetRolesAsync(
+                    user.Id,
+                    cancellationToken);
+
+                isGlobalAdmin = actorRoles.Any(role =>
+                    string.Equals(
+                        role.Name,
+                        nameof(UserRole.Admin),
+                        StringComparison.OrdinalIgnoreCase));
+
+                if (!isGlobalAdmin)
+                {
+                    return Failer<ResponseUserDto>(
+                        "A user without a PropertyId must be a Global Admin.",
+                        statusCode: 403);
+                }
+            }
+
+            int? propertyId = request.PropertyId;
+
+            if (!isGlobalAdmin && !propertyId.HasValue)
+            {
+                return Failer<ResponseUserDto>(
+                    "PropertyId is required for non-global users.",
+                    statusCode: 400);
+            }
+
+            if (!isGlobalAdmin && user.PropertyId.Value != propertyId.Value)
+            {
+                return Failer<ResponseUserDto>(
+                    "The requested property is outside your scope.",
+                    statusCode: 403);
+            }
+
+            if (propertyId.HasValue)
+            {
+                var propertyy = await _repository.GetPropertyAsync(
+                    propertyId.Value,
+                    cancellationToken);
+                if (propertyy is null)
+                {
+                    return Failer<ResponseUserDto>(
+                        "The requested property was not found.",
+                        statusCode: 400);
+                }
+
+                if (propertyy.Status == PropertyStatus.Inactive)
+                {
+                    return Failer<ResponseUserDto>(
+                        "The requested property is not active.",
+                        statusCode: 400);
+                }
+            }
+            if (!isGlobalAdmin && (!user.PropertyId.HasValue || user.PropertyId.Value != propertyId))
+            {
+                return Failer<ResponseUserDto>(
+                    "The requested property is outside your scope.",
+                    statusCode: 403);
+            }
+
+
+
+            var roleValidation = await ValidateRolesAsync(
+                user,
+                request.RoleIds,
+                cancellationToken);
+            if (roleValidation.ErrorMessage is not null)
+            {
+                return Failer<ResponseUserDto>(
+                    roleValidation.ErrorMessage,
+                    roleValidation.Errors,
+                    roleValidation.ErrorStatus);
+            }
+
+            var exitroles = roleValidation.Roles;
+            var propertyRoleError = ValidatePropertyRoleAssignment(propertyId, exitroles);
+            if (propertyRoleError is not null)
+            {
+                return Failer<ResponseUserDto>(propertyRoleError, statusCode: 400);
+            }
+            //normalize
+            var userName = request.UserName.Trim();
+            var email = request.Email.Trim();
+            var fullName = request.FullName.Trim();
+            if (string.IsNullOrWhiteSpace(userName) ||
+                string.IsNullOrWhiteSpace(email) ||
+                string.IsNullOrWhiteSpace(fullName))
+            {
+                return Failer<ResponseUserDto>(message: "UserName, Email and FullName are required.", statusCode: 400);
+            }
+
+            if (!new EmailAddressAttribute().IsValid(email))
+            {
+                return Failer<ResponseUserDto>(
+                    message: "Email must be a valid email address.",
+                    statusCode: 400);
+            }
+
+            if (!await IsEmailUniqueAsync(email, cancellationToken: cancellationToken))
+            {
+                return Failer<ResponseUserDto>(
+                    message: "Email is already in use.",
+                    statusCode: 409);
+            }
+
+            var normalizedUserName = Normalize(userName);
+            if (await _repository.ExistsByNormalizedUserNameAsync(normalizedUserName, cancellationToken: cancellationToken))
+            {
+                return Failer<ResponseUserDto>(message: "Username is already in use.", statusCode: 409);
+            }
+
+            var userparam = new User
+            {
+                UserName = userName,
+                NormalizedUserName = normalizedUserName,
+                Email = email,
+                NormalizedEmail = Normalize(email),
+                FullName = fullName,
+                Address = NormalizeOptional(request.Address),
+                PropertyId = propertyId,
+                IsActive = true,
+                CreatedAt = DateTime.UtcNow,
+
+            }; var auditDto = new AddAuditLogDto
+            {
+                userid = user.Id,
+                TargetEntity = nameof(User),
+                TargetEntityId = "",
+                PropertyId = user.PropertyId,
+                Action = "Create",
+                OldValues = null,
+                NewValues = new
+                {
+                    user.UserName,
+                    user.FullName,
+                    user.PropertyId,
+                    user.IsActive
+                },
+                Reason = null,
+                CorrelationId = GetCorrelationId()
+            }; var auditLog = CreateAuditLog(auditDto);
+            IReadOnlyList<string> rolesname = exitroles.Select(r => r.Name).ToArray();
+            var responsedatabase = await _repository.CreateWithRolesAsync(userparam,
+                request.Password,
+                rolesname,
+                auditLog,
+                cancellationToken);
+            if (!responsedatabase.Succeeded)
+            {
+                return FailureFromIdentity<ResponseUserDto>(responsedatabase, "Unable to create user.");
+            }
+            var getuser = await _repository.GetByIdAsync(userparam.Id, cancellationToken);
+            if (getuser == null)
+            {
+                return Failer<ResponseUserDto>(message: "user is not founded in database", statusCode: 400);
+            }
+
+
+            return new ResponseStatus<ResponseUserDto>(
+                await MapAsync(getuser, cancellationToken), "User created successfully.", 201);
+        }
+
+        public async Task<ResponseStatus<ResponseUserDto>> UpdateAsync(
+            User actor, string userId,         
+            UpdateUserRequestDto request,
+            CancellationToken cancellationToken = default)
+        {
+            //   var actor=await _repository.GetByIdAsync(request.actorid, cancellationToken);
+            if (actor == null || !actor.IsActive)
+            {
+                return Failer<ResponseUserDto>(message: "actor is not found", statusCode: 400);
+
+            }
+            var user = await _repository.GetTrackedUserByIdAsync(userId, cancellationToken);
+            //check user is active 
+            if (user == null || !user.IsActive)
+            {
+                return Failer<ResponseUserDto>(message: "user is not found", statusCode: 400);
+            }
+            if (!await IsWithinScopeAsync(actor, user.PropertyId, cancellationToken))
+            {
+                return Failer<ResponseUserDto>(message: "User was not found.", statusCode: 404);
+            }
+
+            var oldValues = new Dictionary<string, object?>();
+            var newValues = new Dictionary<string, object?>();
+            var changed = false;
+
+            if (string.IsNullOrWhiteSpace(request.Email) ||
+                !new EmailAddressAttribute().IsValid(request.Email.Trim()))
+            {
+                return Failer<ResponseUserDto>(
+                    message: "A valid Email is required.",
+                    statusCode: 400);
+            }
+
+            var email = request.Email.Trim();
+            if (!await IsEmailUniqueAsync(email, user.Id, cancellationToken))
+            {
+                return Failer<ResponseUserDto>(
+                    message: "Email is already in use.",
+                    statusCode: 409);
+            }
+
+            if (!string.Equals(
+                    Normalize(user.Email ?? string.Empty),
+                    Normalize(email),
+                    StringComparison.Ordinal))
+            {
+                oldValues[nameof(user.Email)] = user.Email;
+                newValues[nameof(user.Email)] = email;
+                user.Email = email;
+                user.NormalizedEmail = Normalize(email);
+                changed = true;
+            }
+
+            if (request.FullName is not null)
+            {
+                var fullName = request.FullName.Trim();
+                if (string.IsNullOrWhiteSpace(fullName))
+                {
+                    return Failer<ResponseUserDto>(message: "FullName cannot be empty.", statusCode: 400);
+                }
+
+                if (!string.Equals(user.FullName, fullName, StringComparison.Ordinal))
+                {
+                    oldValues[nameof(user.FullName)] = user.FullName;
+                    newValues[nameof(user.FullName)] = fullName;
+                    user.FullName = fullName;
+                    changed = true;
+                }
+            }
+
+            if (request.Address is not null)
+            {
+                var address = NormalizeOptional(request.Address);
+                if (!string.Equals(user.Address, address, StringComparison.Ordinal))
+                {
+                    oldValues[nameof(user.Address)] = user.Address;
+                    newValues[nameof(user.Address)] = address;
+                    user.Address = address;
+                    changed = true;
+                }
+            }
+
+            if (!changed)
+            {
+                return Success(await MapAsync(user, cancellationToken), "No user fields changed.");
+            }
+
+            user.UpdatedAt = DateTime.UtcNow;
+            var addaduitdto = new AddAuditLogDto
+            {
+                Action = "update",
+                userid = actor.Id,
+                PropertyId = user.PropertyId,
+                Reason = null,
+                TargetEntity = nameof(User),
+                TargetEntityId = user.Id,
+                OldValues = oldValues,
+                NewValues = newValues,
+                CorrelationId = GetCorrelationId()
+            };
+            var audit = CreateAuditLog(addaduitdto);
+            var updateResult = await _repository.UpdateWithAuditAsync(user, audit, cancellationToken);
+            if (!updateResult.Succeeded)
+            {
+                return FailureFromIdentity<ResponseUserDto>(updateResult, "Unable to update user.");
+            }
+
+            var updated = await _repository.GetByIdAsync(user.Id, cancellationToken) ?? user;
+            return Success(await MapAsync(updated, cancellationToken), "User updated successfully.");
+        }
+
+        public async Task<ResponseStatus<ResponseUserDto>> ActivateAsync(
+            User currentuser, string userId,
+            CancellationToken cancellationToken = default)
+        {
+
+            var user = await _repository.GetTrackedUserByIdAsync(userId, cancellationToken);
+            if (currentuser is null || user is null || !await IsWithinScopeAsync(currentuser, user.PropertyId, cancellationToken))
+            {
+                return Failer<ResponseUserDto>(message: "User was not found.", statusCode: 404);
+            }
+            if (user.IsActive)
+            {
+                return Success(await MapAsync(user, cancellationToken), "User is already active.");
+            }
+
+
+            if (user.PropertyId.HasValue)
+            {
+                var property = await _repository.GetPropertyAsync(user.PropertyId.Value, cancellationToken);
+                if (property is null)
+                {
+                    return Failer<ResponseUserDto>(message: "Property was not found.", statusCode: 404);
+                }
+
+                if (property.Status != PropertyStatus.Active)
+                {
+                    return Failer<ResponseUserDto>(message: "Users can only be activated in an active property.", statusCode: 422);
+                }
+            }
+
+            user.IsActive = true;
+            user.UpdatedAt = DateTime.UtcNow;
+            var auditlogdto = new AddAuditLogDto
+            {
+                Action = "activate",
+                CorrelationId = GetCorrelationId(),
+                NewValues = new { IsActive = true },
+                OldValues = new { IsActive = false },
+                PropertyId = user.PropertyId,
+                Reason = null,
+                userid = currentuser.Id,
+                TargetEntity = nameof(User),
+                TargetEntityId = user.Id
+            };
+            var audit = CreateAuditLog(auditlogdto);
+            var updateResult = await _repository.UpdateWithAuditAsync(user, audit, cancellationToken);
+            if (!updateResult.Succeeded)
+            {
+                return FailureFromIdentity<ResponseUserDto>(updateResult, "Unable to activate user.");
+            }
+
+            var activated = await _repository.GetByIdAsync(user.Id, cancellationToken) ?? user;
+            return Success(await MapAsync(activated, cancellationToken), "User activated successfully.");
+        }
+
+        public async Task<ResponseStatus<ResponseUserDto>> DeactivateAsync(
+            User currentuser, string userId,
+
+            CancellationToken cancellationToken = default)
+        {
+
+            var user = await _repository.GetTrackedUserByIdAsync(userId, cancellationToken);
+            if (currentuser is null || user is null || !await IsWithinScopeAsync(currentuser, user.PropertyId, cancellationToken))
+            {
+                return Failer<ResponseUserDto>(message: "User was not found.", statusCode: 404);
+            }
+
+            if (!user.IsActive)
+            {
+                return Success(await MapAsync(user, cancellationToken), "User is already inactive.");
+            }
+
+            user.IsActive = false;
+            user.UpdatedAt = DateTime.UtcNow;
+            var auditlogdto = new AddAuditLogDto
+            {
+                Action = "deactivate",
+                CorrelationId = GetCorrelationId(),
+                NewValues = new { IsActive = false },
+                OldValues = new { IsActive = true },
+                PropertyId = user.PropertyId,
+                Reason = null,
+                userid = currentuser.Id,
+                TargetEntity = nameof(User),
+                TargetEntityId = user.Id
+            };
+            var audit = CreateAuditLog(auditlogdto);
+            var updateResult = await _repository.UpdateWithAuditAsync(user, audit, cancellationToken);
+            if (!updateResult.Succeeded)
+            {
+                return FailureFromIdentity<ResponseUserDto>(updateResult, "Unable to deactivate user.");
+            }
+
+            var deactivated = await _repository.GetByIdAsync(user.Id, cancellationToken) ?? user;
+            return Success(await MapAsync(deactivated, cancellationToken), "User deactivated successfully.");
+        }
+
+        public async Task<ResponseStatus<IReadOnlyList<ResponseRoleDto>>> GetRolesAsync(
+            User currentuser, string userId,
+            CancellationToken cancellationToken = default)
+        {
+
+
+            var user = await _repository.GetByIdAsync(userId, cancellationToken);
+            if (currentuser is null || user is null || !await IsWithinScopeAsync(currentuser, user.PropertyId, cancellationToken))
+            {
+                return Failer<IReadOnlyList<ResponseRoleDto>>(message: "User was not found.", statusCode: 404);
+            }
+
+            var roles = await _repository.GetRolesAsync(user.Id, cancellationToken);
+            var data = roles.Select(MapRole).ToList();
+            return Success<IReadOnlyList<ResponseRoleDto>>(data, "User roles retrieved successfully.");
+        }
+
+        public async Task<ResponseStatus<ResponseUserDto>> ReplaceRolesAsync(
+      User actor, string userId,
+       ReplaceUserRolesRequestDto request,
+       CancellationToken cancellationToken = default)
+        {
+            if (request is null)
+            {
+                return Failer<ResponseUserDto>(
+                    message: "Request body is required.",
+                    statusCode: 400);
+            }
+
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return Failer<ResponseUserDto>(
+                    message: "User ID is required.",
+                    statusCode: 400);
+            }
+            var user = await _repository.GetTrackedUserByIdAsync(
+                userId,
+                cancellationToken);
+
+            if (actor is null ||
+                !actor.IsActive ||
+                user is null ||
+                !user.IsActive ||
+                !await IsWithinScopeAsync(
+                    actor,
+                    user.PropertyId,
+                    cancellationToken))
+            {
+                return Failer<ResponseUserDto>(
+                    message: "User was not found.",
+                    statusCode: 404);
+            }
+
+            var actorPermissions = await _repository.GetPermissionNamesAsync(
+                actor.Id,
+                cancellationToken);
+
+            if (!actorPermissions.Contains(Permissions.Users.AssignRole))
+            {
+                return Failer<ResponseUserDto>(
+                    message: "User.AssignRole permission is required to replace roles.",
+                    statusCode: 403);
+            }
+
+            var requestedRoleIds = request.RoleIds?.ToList()
+                                   ?? new List<string>();
+
+            var rolesResult = await ValidateRolesAsync(
+                actor,
+                requestedRoleIds,
+                cancellationToken);
+
+            if (rolesResult.ErrorMessage is not null)
+            {
+                return Failer<ResponseUserDto>(
+                    rolesResult.ErrorMessage,
+                    rolesResult.Errors,
+                    rolesResult.ErrorStatus);
+            }
+
+            var hasAdminRole = rolesResult.Roles.Any(role =>
+                string.Equals(
+                    role.Name,
+                    nameof(UserRole.Admin),
+                    StringComparison.OrdinalIgnoreCase));
+            var hasNonAdminRole = rolesResult.Roles.Any(role =>
+                !string.Equals(
+                    role.Name,
+                    nameof(UserRole.Admin),
+                    StringComparison.OrdinalIgnoreCase));
+
+            if (hasAdminRole && hasNonAdminRole)
+            {
+                return Failer<ResponseUserDto>(
+                    message: "The Admin role cannot be combined with property-scoped roles.",
+                    statusCode: 400);
+            }
+
+            var targetPropertyId = hasAdminRole
+                ? null
+                : request.PropertyId ?? user.PropertyId;
+
+            if (hasNonAdminRole)
+            {
+                if (!targetPropertyId.HasValue)
+                {
+                    return Failer<ResponseUserDto>(
+                        message: "PropertyId is required for non-Admin roles.",
+                        statusCode: 400);
+                }
+
+                var property = await _repository.GetPropertyAsync(
+                    targetPropertyId.Value,
+                    cancellationToken);
+
+                if (property is null)
+                {
+                    return Failer<ResponseUserDto>(
+                        message: "Property was not found.",
+                        statusCode: 404);
+                }
+
+                if (property.Status != PropertyStatus.Active)
+                {
+                    return Failer<ResponseUserDto>(
+                        message: "Non-Admin roles can only be assigned to an active Property.",
+                        statusCode: 422);
+                }
+            }
+
+            if (!await IsWithinScopeAsync(actor, targetPropertyId, cancellationToken))
+            {
+                return Failer<ResponseUserDto>(
+                    message: "User was not found.",
+                    statusCode: 404);
+            }
+
+            var propertyRoleError = ValidatePropertyRoleAssignment(targetPropertyId, rolesResult.Roles);
+            if (propertyRoleError is not null)
+            {
+                return Failer<ResponseUserDto>(propertyRoleError, statusCode: 400);
+            }
+
+            var oldPropertyId = user.PropertyId;
+            user.PropertyId = targetPropertyId;
+            user.UpdatedAt = DateTime.UtcNow;
+
+            var oldRoles = await _repository.GetRolesAsync(
+                user.Id,
+                cancellationToken);
+
+            var newRoleNames = rolesResult.Roles
+                .Where(role => !string.IsNullOrWhiteSpace(role.Name))
+                .Select(role => role.Name!)
+                .ToArray();
+
+            var auditLogDto = new AddAuditLogDto
+            {
+                userid = actor.Id,
+                TargetEntity = nameof(User),
+                TargetEntityId = user.Id,
+                PropertyId = targetPropertyId,
+                Action = "ReplaceRoles",
+                OldValues = new
+                {
+                    PropertyId = oldPropertyId,
+                    Roles = oldRoles.Select(MapRole).ToList()
+                },
+                NewValues = new
+                {
+                    PropertyId = targetPropertyId,
+                    Roles = rolesResult.Roles.Select(MapRole).ToList()
+                },
+                Reason = null,
+                CorrelationId = GetCorrelationId()
+            };
+
+            var auditLog = CreateAuditLog(auditLogDto);
+
+            var replaceResult = await _repository.ReplaceRolesAsync(
+                user,
+                newRoleNames,
+                auditLog,
+                cancellationToken);
+
+            if (!replaceResult.Succeeded)
+            {
+                return FailureFromIdentity<ResponseUserDto>(
+                    replaceResult,
+                    "Unable to replace user roles.");
+            }
+
+            var updatedUser = await _repository.GetByIdAsync(
+                user.Id,
+                cancellationToken) ?? user;
+
+            return Success(
+                await MapAsync(updatedUser, cancellationToken),
+                "User roles replaced successfully.");
+        }
+        public async Task<ResponseStatus<PagedResponse<RoleListResponseDto>>>
+    GetRolesListAsync(
+        User actor,
+        RoleListRequestDto request,
+        CancellationToken cancellationToken = default)
+        {
+            if (actor is null)
+            {
+                return Failer<PagedResponse<RoleListResponseDto>>(
+                    message: "Current user is required.",
+                    statusCode: 401);
+            }
+
+            if (!actor.IsActive)
+            {
+                return Failer<PagedResponse<RoleListResponseDto>>(
+                    message: "Current user is not active.",
+                    statusCode: 403);
+            }
+
+            if (request is null)
+            {
+                return Failer<PagedResponse<RoleListResponseDto>>(
+                    message: "Request is required.",
+                    statusCode: 400);
+            }
+
+            var permissionResult =
+                await checkpermissionandstateuser(
+                    actor.Id,
+                    cancellationToken,
+                    Permissions.Users.Read);
+
+            if (!permissionResult.Success)
+            {
+                return Failer<PagedResponse<RoleListResponseDto>>(
+                    message: permissionResult.Message,
+                    errors: permissionResult.Errors,
+                    statusCode: permissionResult.StatusCode);
+            }
+
+            var pageNumber = Math.Max(
+                request.Pg?.PageNumber ?? 1,
+                1);
+
+            var pageSize = Math.Clamp(
+                request.Pg?.PageSize ?? 20,
+                1,
+                100);
+
+            var search = request.Search?.Trim();
+
+            var permissionName =
+                request.PermissionName?.Trim();
+
+            var skip = (pageNumber - 1) * pageSize;
+
+            var roles = await _repository.GetRolesListAsync(
+                search,
+                request.IsActive,
+                permissionName,
+                skip,
+                pageSize,
+                cancellationToken);
+
+            var totalCount = await _repository.CountRolesAsync(
+                search,
+                request.IsActive,
+                permissionName,
+                cancellationToken);
+
+            var items = roles
+                .Select(role => new RoleListResponseDto
+                {
+                    RoleId = role.Id,
+                    RoleName = role.Name ?? string.Empty,
+                    Description = role.Description,
+                    IsActive = role.IsActive,
+                    Permissions = role.RolePermissions
+                        .Where(rolePermission =>
+                            rolePermission.Permission != null)
+                        .Select(rolePermission =>
+                            rolePermission.Permission.Name)
+                        .Where(permissionName =>
+                            !string.IsNullOrWhiteSpace(permissionName))
+                        .Distinct(StringComparer.OrdinalIgnoreCase)
+                        .OrderBy(permissionName => permissionName)
+                        .ToArray()
+                })
+                .ToList();
+
+            var data = new PagedResponse<RoleListResponseDto>
+            {
+                Items = items,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                TotalCount = totalCount
+            };
+
+            return Success(
+                data,
+                "Roles retrieved successfully.");
+        }
+
+        public async Task<ResponseStatus<bool>> checkpermissionandstateuser(
+            string userid,
+            CancellationToken cancellationToken,
+            string permission)
+        {
+            //state
+            var user = await _repository.GetByIdAsync(userid, cancellationToken);
+            if (user == null || !user.IsActive)
+            {
+                return new ResponseStatus<bool>(statusCode: 400, message: "this user is not active");
+            }
+            //permission
+            var permissions = await _repository.GetPermissionNamesAsync(userid, cancellationToken);
+            if (!permissions.Contains(permission.Trim()))
+            {
+                return new ResponseStatus<bool>(
+                        statusCode: 403,
+                        message: "User does not have this permission"
+                );
+            }
+            return new ResponseStatus<bool>(
+                data: true,
+                message: "User is active and has permission",
+                statusCode: 200
+            );
+        }
+        private ResponseStatus<T> Failer<T>(
+            string message,
+            IEnumerable<string>? errors = null,
+            int statusCode = 400)
+        {
+            return new ResponseStatus<T>(
+                message,
+                errors?.ToList(),
+                statusCode);
+        }
+        private ResponseStatus<T> Success<T>(
+            T data,
+            string message = "",
+            int statusCode = 200)
+        {
+            return new ResponseStatus<T>(
+                data,
+                message,
+                statusCode);
+        }
+        private async Task<RoleValidationResult> ValidateRolesAsync(
+    User actor,
+    IEnumerable<string>? roleIds,
+    CancellationToken cancellationToken)
+        {
+            var requestedRoleIds = roleIds?.ToList() ?? new List<string>();
+            if (requestedRoleIds.Count == 0)
+            {
+                return RoleValidationResult.Success(Array.Empty<Role>());
+            }
+
+            if (requestedRoleIds.Any(string.IsNullOrWhiteSpace))
+            {
+                return RoleValidationResult.Failure("Role IDs cannot be empty.");
+            }
+
+            if (requestedRoleIds.Distinct(StringComparer.Ordinal).Count() != requestedRoleIds.Count)
+            {
+                return RoleValidationResult.Failure("Duplicated role IDs are not allowed.");
+            }
+
+            var roles = await _repository.GetRolesByIdsAsync(
+                requestedRoleIds,
+                cancellationToken);
+            var requestedRoleIdSet = requestedRoleIds.ToHashSet(StringComparer.Ordinal);
+            if (roles.Count != requestedRoleIdSet.Count ||
+                roles.Any(role => !requestedRoleIdSet.Contains(role.Id)))
+            {
+                return RoleValidationResult.Failure("There are role IDs that were not found.");
+            }
+
+            var inactiveRoleErrors = roles
+                .Where(role => !role.IsActive)
+                .Select(role => $"{role.Id} is not active")
+                .ToList();
+            if (inactiveRoleErrors.Count > 0)
+            {
+                return RoleValidationResult.Failure(
+                    "There are inactive role IDs.",
+                    inactiveRoleErrors);
+            }
+
+            var actorPermissions = await _repository.GetPermissionNamesAsync(
+                actor.Id,
+                cancellationToken);
+            if (!actorPermissions.Contains(Permissions.Users.AssignRole))
+            {
+                return RoleValidationResult.Failure(
+                    "User.AssignRole permission is required to assign roles.");
+            }
+
+            var requestedPermissions = await _repository
+                .GetPermissionNamesByRoleIdsAsync(
+                    requestedRoleIds,
+                    cancellationToken);
+            if (requestedPermissions.Any(permission => !actorPermissions.Contains(permission)))
+            {
+                return RoleValidationResult.Failure(
+                    "The requested roles would escalate privileges.");
+            }
+
+            return RoleValidationResult.Success(roles);
+        }
+
+        private sealed class RoleValidationResult
+        {
+            private RoleValidationResult(
+                IReadOnlyList<Role> roles,
+                string? errorMessage = null,
+                IEnumerable<string>? errors = null,
+                int errorStatus = 400)
+            {
+                Roles = roles;
+                ErrorMessage = errorMessage;
+                Errors = errors?.ToList() ?? new List<string>();
+                ErrorStatus = errorStatus;
+            }
+
+            public IReadOnlyList<Role> Roles { get; }
+
+            public string? ErrorMessage { get; }
+
+            public IReadOnlyList<string> Errors { get; }
+
+            public int ErrorStatus { get; }
+
+            public static RoleValidationResult Success(
+                IReadOnlyList<Role> roles)
+            {
+                return new RoleValidationResult(roles);
+            }
+
+            public static RoleValidationResult Failure(
+                string message,
+                IEnumerable<string>? errors = null,
+                int status = 400)
+            {
+                return new RoleValidationResult(
+                    Array.Empty<Role>(),
+                    message,
+                    errors,
+                    status);
+            }
+        }
+
+
+        private async Task<ResponseUserDto> MapAsync(
+
+                 User user,
+                 CancellationToken cancellationToken)
+        {
+            var roles = await _repository.GetRolesAsync(
+                user.Id,
+                cancellationToken);
+
+            return new ResponseUserDto
+            {
+                UserId = user.Id,
+                UserName = user.UserName ?? string.Empty,
+                Email = user.Email,
+                FullName = user.FullName,
+                Address = user.Address,
+                PropertyId = user.PropertyId,
+                PropertyName = user.Property?.Name,
+                IsActive = user.IsActive,
+                CreatedAt = user.CreatedAt,
+                UpdatedAt = user.UpdatedAt,
+                Roles = roles
+                    .Select(role => new ResponseRoleDto
+                    {
+                        RoleId = role.Id,
+                        RoleName = role.Name ?? string.Empty
+                    })
+                    .ToList()
+            };
+        }
+        private static string Normalize(string value)
+        {
+            return value.Trim().ToUpperInvariant();
+        }
+
+        private async Task<bool> IsEmailUniqueAsync(
+            string email,
+            string? excludingUserId = null,
+            CancellationToken cancellationToken = default)
+        {
+            var normalizedEmail = Normalize(email);
+            var emailExists = await _repository.ExistsByNormalizedEmailAsync(
+                normalizedEmail,
+                excludingUserId,
+                cancellationToken: cancellationToken);
+
+            return !emailExists;
+        }
+
+        private static AuditLog CreateAuditLog(AddAuditLogDto auditDto)
+        {
+            if (auditDto is null)
+            {
+                throw new ArgumentNullException(nameof(auditDto));
+            }
+
+            return new AuditLog
+            {
+                UserId = auditDto.userid,
+                PropertyId = auditDto.PropertyId,
+                EntityName = auditDto.TargetEntity,
+                EntityId = auditDto.TargetEntityId,
+                Action = auditDto.Action,
+                OldValues = auditDto.OldValues is null
+                    ? null
+                    : JsonSerializer.Serialize(auditDto.OldValues),
+                NewValues = auditDto.NewValues is null
+                    ? null
+                    : JsonSerializer.Serialize(auditDto.NewValues),
+                Reason = auditDto.Reason,
+                CorrelationId = auditDto.CorrelationId,
+                CreatedAt = DateTimeOffset.UtcNow,
+                CreatedBy = auditDto.userid
+            };
+        }
+        private static string? NormalizeOptional(string? value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return null;
+            }
+
+            return value.Trim().ToUpperInvariant();
+        }
+        private static ResponseStatus<T> FailureFromIdentity<T>(
+    IdentityResult result,
+    string message)
+        {
+            var errors = result.Errors.Select(e => e.Description).ToList();
+            var statuscode = 0;
+            if (result.Errors.Any(e => e.Code == "DuplicateUserName" || e.Code == "ConcurrencyFailure"))
+            {
+                statuscode = 409;
+            }
+            else
+            {
+                statuscode = 400;
+            }
+            return new ResponseStatus<T>(message, errors, statuscode);
+        }
+        private async Task<bool> IsWithinScopeAsync(
+      User actor,
+      int? targetPropertyId,
+      CancellationToken cancellationToken)
+        {
+            if (actor is null || !actor.IsActive)
+            {
+                return false;
+            }
+
+            if (actor.PropertyId.HasValue)
+            {
+                return targetPropertyId.HasValue &&
+                       actor.PropertyId.Value == targetPropertyId.Value;
+            }
+
+
+            var actorRoles = await _repository.GetRolesAsync(
+                actor.Id,
+                cancellationToken);
+
+            var isGlobalAdmin = actorRoles.Any(role =>
+                role.IsActive &&
+                string.Equals(
+                    role.Name,
+                    nameof(UserRole.Admin),
+                    StringComparison.OrdinalIgnoreCase));
+
+            if (!isGlobalAdmin)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private static ResponseRoleDto MapRole(Role role)
+        {
+            return new ResponseRoleDto
+            {
+                RoleId = role.Id,
+                RoleName = role.Name ?? string.Empty,
+                isactive = role.IsActive,
+            };
+        }
+        private string GetCorrelationId()
+        {
+            var httpContext = httpContextAccessor.HttpContext;
+
+            if (httpContext is null)
+            {
+                return Guid.NewGuid().ToString();
+            }
+
+            var correlationId = httpContext.Request.Headers["X-Correlation-ID"].FirstOrDefault();
+
+            if (!string.IsNullOrWhiteSpace(correlationId))
+            {
+                return correlationId;
+            }
+
+            return httpContext.TraceIdentifier;
+        }
+        private static bool HasActiveRole(
+    IEnumerable<Role> roles,
+    UserRole expectedRole)
+        {
+            return roles.Any(role =>
+                role.IsActive &&
+                string.Equals(
+                    role.Name,
+                    expectedRole.ToString(),
+                    StringComparison.OrdinalIgnoreCase));
+        }
+
+        private static string? ValidatePropertyRoleAssignment(
+      int? propertyId,
+      IReadOnlyList<Role> roles)
+        {
+            var hasAdminRole = roles.Any(role =>
+                string.Equals(
+                    role.Name,
+                    nameof(UserRole.Admin),
+                    StringComparison.OrdinalIgnoreCase));
+
+            if (hasAdminRole && propertyId.HasValue)
+            {
+                return "Admin users cannot belong to a Property.";
+            }
+
+            if (!propertyId.HasValue)
+            {
+                var isSingleAdminRole = roles.Count == 1 &&
+                    string.Equals(
+                        roles[0].Name,
+                        nameof(UserRole.Admin),
+                        StringComparison.OrdinalIgnoreCase);
+
+                if (!isSingleAdminRole)
+                {
+                    return "A user without a PropertyId must have exactly one role, and that role must be Admin.";
+                }
+            }
+
+            var hasNonAdminRole = roles.Any(role =>
+                !string.Equals(
+                    role.Name,
+                    nameof(UserRole.Admin),
+                    StringComparison.OrdinalIgnoreCase));
+
+            if (hasNonAdminRole && !propertyId.HasValue)
+            {
+                return "Non-Admin users must belong to a Property.";
+            }
+
+            return null;
+        }
+    }
+}

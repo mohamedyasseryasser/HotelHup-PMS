@@ -1,0 +1,118 @@
+﻿using HotelHup.CORE.Enums;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HotelHup.APPLICATION.DTO.property.propertydepositdtos
+{
+    public class CreateDepositPolicyRequest
+    {
+        [Required, StringLength(150)]
+        public string Name { get; init; } = string.Empty;
+
+        public DepositType Type { get; init; }
+
+        public decimal Amount { get; init; }
+
+        public decimal Percentage { get; init; }
+
+        public DateTimeOffset ValidFrom { get; init; }
+            = DateTimeOffset.UtcNow;
+
+        public DateTimeOffset? ValidTo { get; init; }
+
+        public string? IfMatch { get; init; }
+    }
+
+    public sealed class UpdateDepositPolicyRequest
+      : CreateDepositPolicyRequest
+    {
+        public string? Reason { get; init; }
+    }
+    public sealed class ChangeDepositPolicyStatusRequest
+    {
+        public bool? Confirm { get; init; }
+
+        [StringLength(500, MinimumLength = 2)]
+        public string? Reason { get; init; }
+
+        public string? IfMatch { get; init; }
+    }
+
+
+    public sealed class DepositPolicyVersionResponse
+    {
+        public int Id { get; init; }
+
+        public int DepositId { get; init; }
+
+        public int Version { get; init; }
+
+        public string Name { get; init; } =
+            string.Empty;
+
+        public DepositType Type { get; init; }
+
+        public decimal Amount { get; init; }
+
+        public decimal Percentage { get; init; }
+
+        public DateTimeOffset ValidFrom { get; init; }
+
+        public DateTimeOffset? ValidTo { get; init; }
+
+        public bool IsActive { get; init; }
+    }
+    public sealed class DepositPolicyVersionAuditDto
+    {
+        public int Id { get; init; }
+        public int DepositId { get; init; }
+        public int Version { get; init; }
+        public string Name { get; init; } = string.Empty;
+        public DepositType Type { get; init; }
+        public decimal Amount { get; init; }
+        public decimal Percentage { get; init; }
+        public DateTimeOffset ValidFrom { get; init; }
+        public DateTimeOffset? ValidTo { get; init; }
+        public bool IsActive { get; init; }
+    }
+
+    public sealed class DepositPolicyAuditDto
+    {
+        public int Id { get; init; }
+        public int PropertyId { get; init; }
+        public bool IsActive { get; init; }
+        public int CurrentVersion { get; init; }
+        public DepositPolicyVersionAuditDto? Version { get; init; }
+    }
+
+    public sealed class DepositPolicyResponse
+    {
+        public int Id { get; init; }
+
+        public int PropertyId { get; init; }
+
+        public string Name { get; init; } =
+            string.Empty;
+
+        public DepositType Type { get; init; }
+
+        public decimal Amount { get; init; }
+
+        public decimal Percentage { get; init; }
+
+        public int CurrentVersion { get; init; }
+        public string RowVersion { get; init; } = string.Empty;
+
+        public bool IsActive { get; init; }
+
+        public IReadOnlyList<DepositPolicyVersionResponse>
+            Versions
+        { get; init; } =
+            Array.Empty<DepositPolicyVersionResponse>();
+    }
+
+}
