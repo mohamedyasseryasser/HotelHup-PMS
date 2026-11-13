@@ -180,6 +180,17 @@ The system provides a centralized platform for managing:
 
 ---
 
+## 💡 Key Technical Highlights
+
+- **Layered Architecture:** Separates the API, Application, Core, and Infrastructure layers, with service and repository abstractions.
+- **Authentication and Authorization:** Uses JWT bearer authentication, refresh-token rotation, and role- and permission-based access control with property-scoped authorization.
+- **Reservation Data Integrity:** Uses SQL Server `RowVersion` tokens for optimistic concurrency checks and serializable transactions around key reservation workflows. Room-availability checks help prevent conflicting room assignments.
+- **Versioned Rates and Policy Snapshots:** Supports versioned rate plans and stores applicable pricing and policy details with reservations to preserve the terms used at booking time.
+- **Relational Data Management:** Uses Entity Framework Core with SQL Server and database migrations to manage persistence and schema changes.
+
+ 
+---
+
 ## 🛠️ Technologies & Tools
 
 ### ⚙️ Backend
