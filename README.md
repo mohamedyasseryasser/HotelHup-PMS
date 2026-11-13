@@ -1,40 +1,242 @@
+
 # 🏨 HotelHup
 
 ### Hotel Property Management System
 
-HotelHup is a web-based hotel management system designed to help hotel teams manage their daily operations in one place. It brings together property, room, guest, reservation, folio, and payment management, reducing the need to rely on disconnected tools and manual workflows.
-## Features
+HotelHup is a web-based Hotel Property Management System (PMS) designed to help hotel teams manage their daily operations in one place.
 
-HotelHup is a hotel operations management system covering the full guest journey, from booking to checkout, billing, and reporting.
+It brings together property, room, guest, reservation, folio, payment, housekeeping, and reporting management, reducing the need to rely on disconnected tools and manual workflows.
 
-### 🛎️ Reservations & Front Desk
-- **Reservation lifecycle:** create, modify, confirm, and cancel bookings, with availability search, booking details, and a status-change history.
-- **Guest stay operations:** check-in, check-out, room assignment and release, checkout extension, and early checkout.
-- **No-show handling:** record no-shows on reservations.
+---
 
-### 💳 Billing, Payments & Reports
-- **Folio management:** view folio and summary, add charges, void items, and close or reopen a folio.
-- **Payments:** record payments, view payment summaries, and process refunds.
-- **Reports:** occupancy, revenue, arrivals, departures, in-house guests, room status, payments, refunds, cancelled reservations, housekeeping, and expenses.
+## 🚀 Features
 
-### 🏨 Properties, Rooms & Guests
-- **Properties:** create and update hotel details and settings, activate or deactivate properties, and manage property-level taxes and policies.
-- **Rooms & room types:** create, update, and activate or deactivate rooms and room types, with available-room search.
-- **Guest profiles:** add, update, and view guests and their booking history, with the option to deactivate a profile or anonymize personal data.
+HotelHup covers the complete hotel guest journey, from reservation creation to check-out, billing, and reporting.
 
-### 💰 Rates & Policies
-- **Rate plans:** manage rate plans and view their versions.
-- **Taxes:** manage tax configuration.
-- **Cancellation & deposit policies:** create, update, and activate or deactivate policies, with a policy snapshot saved on each reservation.
+### 🛎️ 1. Reservations & Front Desk
 
-### 🧹 Hotel Operations
-- **Housekeeping:** create and assign tasks, start and finish cleaning, and inspect rooms.
-- **Services & expenses:** manage hotel services, and record, view, update, or cancel expenses.
+- **Reservation lifecycle:** Create, modify, confirm, and cancel bookings, with availability search, booking details, and status-change history.
+- **Guest stay operations:** Check-in, check-out, room assignment and release, checkout extension, and early checkout.
+- **No-show handling:** Record and manage no-show reservations.
+- **Room availability:** Search available rooms based on dates, occupancy, and room requirements.
 
-### 🔐 Users & Access
-- **User and role management:** manage user accounts (activate or deactivate), manage roles, and assign roles to users.
-- **Authentication:** login, access-token refresh, and logout, with role- and permission-based access checks.
+**Screenshots:**
 
-### 🖥️ Application UI
-- Login page and dashboard.
-- Screens for managing hotels, rooms, guests, reservations, invoices, payments, reports, and other modules.
+<p align="center">
+  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094354.png" width="48%" />
+  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094410.png" width="48%" />
+</p>
+
+<p align="center">
+  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094504.png" width="48%" />
+  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094751.png" width="48%" />
+</p>
+
+<p align="center">
+  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094840.png" width="48%" />
+  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094848.png" width="48%" />
+</p>
+
+<p align="center">
+  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094857.png" width="48%" />
+  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094913.png" width="48%" />
+</p>
+
+---
+
+### 💳 2. Billing, Payments & Reports
+
+- **Folio management:** View folios and summaries, add charges, void items, and close or reopen folios.
+- **Payments:** Record payments, view payment summaries, and process refunds.
+- **Financial tracking:** Monitor financial transactions and billing activities.
+- **Reports:** Occupancy, revenue, arrivals, departures, in-house guests, room status, payments, refunds, cancelled reservations, housekeeping, and expenses.
+
+**Screenshots:**
+
+<p align="center">
+  <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095031.png" width="48%" />
+  <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095049.png" width="48%" />
+</p>
+
+<p align="center">
+  <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095056.png" width="48%" />
+  <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095139.png" width="48%" />
+</p>
+
+<p align="center">
+  <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095308.png" width="48%" />
+  <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095319.png" width="48%" />
+</p>
+
+<p align="center">
+  <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095330.png" width="48%" />
+  <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095349.png" width="48%" />
+</p>
+
+<p align="center">
+  <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095452.png" width="48%" />
+  <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095522.png" width="48%" />
+</p>
+
+---
+
+### 🏨 3. Properties, Rooms & Guests
+
+- **Properties:** Create and update hotel details and settings, activate or deactivate properties, and manage property-level taxes and policies.
+- **Rooms & room types:** Create, update, activate, or deactivate rooms and room types, with available-room search.
+- **Guest profiles:** Add, update, and view guest profiles and booking history.
+- **Guest privacy:** Deactivate guest profiles or anonymize personal data.
+
+**Screenshots:**
+
+<p align="center">
+  <img src="docs/images/Properties,%20Rooms%20%26%20Guests/Screenshot%202026-11-13%20100029.png" width="48%" />
+  <img src="docs/images/Properties,%20Rooms%20%26%20Guests/Screenshot%202026-11-13%20100054.png" width="48%" />
+</p>
+
+<p align="center">
+  <img src="docs/images/Properties,%20Rooms%20%26%20Guests/Screenshot%202026-11-13%20100126.png" width="48%" />
+  <img src="docs/images/Properties,%20Rooms%20%26%20Guests/Screenshot%202026-11-13%20100225.png" width="48%" />
+</p>
+
+---
+
+### 💰 4. Rates & Policies
+
+- **Rate plans:** Manage rate plans and view their version history.
+- **Taxes:** Configure and manage property-level tax settings.
+- **Cancellation policies:** Create, update, and activate or deactivate cancellation policies.
+- **Deposit policies:** Configure deposit requirements and payment conditions.
+- **Policy snapshots:** Preserve policy details on reservations to maintain historical consistency.
+
+**Screenshots:**
+
+<p align="center">
+  <img src="docs/images/Rates%20%26%20Policies/Screenshot%202026-11-13%20100326.png" width="48%" />
+  <img src="docs/images/Rates%20%26%20Policies/Screenshot%202026-11-13%20100343.png" width="48%" />
+</p>
+
+<p align="center">
+  <img src="docs/images/Rates%20%26%20Policies/Screenshot%202026-11-13%20100432.png" width="48%" />
+</p>
+
+---
+
+### 🧹 5. Hotel Operations
+
+- **Housekeeping:** Create and assign housekeeping tasks.
+- **Cleaning workflow:** Start and finish cleaning tasks and inspect rooms.
+- **Room readiness:** Track room conditions and inspection status.
+- **Services & expenses:** Manage hotel services and record, view, update, or cancel expenses.
+
+**Screenshots:**
+
+<p align="center">
+  <img src="docs/images/Hotel%20Operations/Screenshot%202026-11-13%20100643.png" width="48%" />
+  <img src="docs/images/Hotel%20Operations/Screenshot%202026-11-13%20100656.png" width="48%" />
+</p>
+
+---
+
+### 🔐 6. Users & Access Management
+
+- **User management:** Create and manage user accounts, activate or deactivate users.
+- **Role management:** Manage roles and assign roles to users.
+- **Authentication:** Login, access-token refresh, and logout.
+- **Authorization:** Role- and permission-based access control.
+- **Property-level access:** Restrict users to their assigned hotel properties.
+
+**Screenshots:**
+
+<p align="center">
+  <img src="docs/images/Users%20%26%20Access/Screenshot%202026-11-13%20100910.png" width="70%" />
+</p>
+
+---
+
+## 🖥️ Application UI
+
+HotelHup provides a responsive web interface for managing hotel operations through a centralized dashboard.
+
+**Screenshots:**
+
+<p align="center">
+  <img src="docs/images/Application%20UI/Screenshot%202026-11-13%20101105.png" width="48%" />
+  <img src="docs/images/Application%20UI/Screenshot%202026-11-13%20101143.png" width="48%" />
+</p>
+
+<p align="center">
+  <img src="docs/images/Application%20UI/Screenshot%202026-11-13%20101155.png" width="70%" />
+</p>
+
+---
+
+## 🛠️ Technologies Used
+
+### Backend
+- C#
+- ASP.NET Core Web API
+- Entity Framework Core
+- SQL Server
+- ASP.NET Core Identity
+- JWT Authentication
+- Clean Architecture
+
+### Frontend
+- Angular
+- TypeScript
+- HTML5
+- CSS3
+- Bootstrap
+
+### Tools & Practices
+- Git & GitHub
+- Swagger / OpenAPI
+- Postman
+- RESTful APIs
+- Repository Pattern
+- Dependency Injection
+- SOLID Principles
+
+---
+
+## 📂 Project Structure
+
+```text
+HotelHup/
+│
+├── hotelhup_back/
+│   ├── CORE/
+│   ├── APPLICATION/
+│   ├── INFRASTRUCTURE/
+│   └── API/
+│
+├── hotelhup_front/
+│
+├── docs/
+│   └── images/
+│       ├── Application UI/
+│       ├── Billing, Payments & Reports/
+│       ├── Hotel Operations/
+│       ├── Properties, Rooms & Guests/
+│       ├── Rates & Policies/
+│       ├── Reservations & Front Desk/
+│       └── Users & Access/
+│
+└── README.md
+```
+
+---
+
+## 🎯 Project Goal
+
+HotelHup was developed as a full-stack portfolio project to demonstrate the design and implementation of a real-world hotel management system, covering business workflows, backend architecture, database management, authentication, authorization, and frontend development.
+
+---
+
+## 🔗 Project Links
+
+- **GitHub Repository:** [HotelHup PMS](https://github.com/mohamedyasseryasser/HotelHup-PMS)
+- **Live Backend API:** [HotelHup API](http://hotelhup.runasp.net/)
+- **API Documentation:** [Swagger UI](http://hotelhup.runasp.net/swagger)
+
