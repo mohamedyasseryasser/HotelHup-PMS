@@ -24,7 +24,6 @@ HotelHup covers the complete hotel guest journey, from reservation creation to c
 
 <p align="center">
   <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094354.png" width="48%" />
-  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094410.png" width="48%" />
 </p>
 
 <p align="center">
