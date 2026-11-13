@@ -156,3 +156,69 @@ HotelHup provides a responsive web interface for managing hotel operations throu
 <p align="center">
   <img src="docs/images/Application%20UI/Screenshot%202026-11-13%20101155.png" width="70%" />
 </p>
+
+## 🛠️ Technologies & Tools
+
+### ⚙️ Backend
+- 💻 C#
+- 🚀 .NET 8
+- 🌐 ASP.NET Core Web API
+- 🗄️ Entity Framework Core 8
+- 🛢️ Microsoft SQL Server
+- 🔐 ASP.NET Core Identity
+- 🔑 JWT Bearer Authentication
+- 🛡️ Policy-Based Authorization
+- ⏳ Hangfire 1.8
+- 📚 Swagger / OpenAPI
+- 💉 Dependency Injection
+- 🔄 CancellationToken
+- 🔒 RowVersion & Optimistic Concurrency
+
+### 🎨 Frontend
+- 🅰️ Angular 22
+- 📘 TypeScript 6
+- 📡 RxJS 7.8
+- ⚡ Angular Signals
+- 🧩 Standalone Components
+- 🧭 Angular Router
+- 📝 Angular Forms
+- 🌐 Angular HttpClient
+- 🎨 Bootstrap 5.3
+- 💅 CSS3
+
+### 🏗️ Architecture & Design Patterns
+- 🏛️ Clean Architecture Style
+- 📦 Repository Pattern
+- ⚙️ Service Layer
+- 📋 DTO Pattern
+- 🔗 RESTful API
+- 🗃️ Code First Approach
+- 🔄 Database Migrations
+- 💉 Dependency Injection
+- 🔐 Role-Based & Policy-Based Authorization
+
+### 🧪 Testing
+**Backend:**
+- 🧪 NUnit 5
+- 🎭 Moq 4.21
+- ⚙️ Microsoft.NET.Test.Sdk
+- 🔌 NUnit3TestAdapter
+
+**Frontend:**
+- 🧪 Vitest 4
+- 🌐 JSDOM
+- 🅰️ Angular Testing APIs
+
+### 🔧 Development Tools
+- 💻 Visual Studio
+- 📝 Visual Studio Code
+- 📦 npm 11
+- 🅰️ Angular CLI 22
+- 🐙 Git & GitHub
+- 🚀 Postman
+- 📚 Swagger UI
+- ✨ Prettier
+
+### ☁️ Deployment & Hosting
+- 🌐 MonsterASP
+- 🛢️ SQL Server Hosting
