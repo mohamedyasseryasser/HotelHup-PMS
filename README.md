@@ -8,74 +8,77 @@ HotelHup is a web-based Hotel Property Management System (PMS) designed to help 
 It brings together property, room, guest, reservation, folio, payment, housekeeping, and reporting management, reducing the need to rely on disconnected tools and manual workflows.
 
 ---
+## ✨ Features
 
-## 🚀 Features
+### 🏨 Property Management
+- Create and update hotel property records.
+- Activate and deactivate properties.
+- Configure property settings and taxes.
 
-HotelHup covers the complete hotel guest journey, from reservation creation to check-out, billing, and reporting.
+### 📅 Reservations & Front Desk
+- Search room availability based on check-in and check-out dates.
+- Create, update, confirm, and cancel reservations.
+- View reservation details and status history.
+- Record guest no-shows.
+- Assign and release rooms.
+- Process guest check-ins and check-outs.
+- Handle early checkouts and checkout extensions.
 
-### 🛎️ 1. Reservations & Front Desk
+### 🛏️ Room & Room Type Management
+- Create and manage rooms and room types.
+- Update room information and configurations.
+- Activate and deactivate rooms and room types.
 
-- **Reservation lifecycle:** Create, modify, confirm, and cancel bookings, with availability search, booking details, and status-change history.
-- **Guest stay operations:** Check-in, check-out, room assignment and release, checkout extension, and early checkout.
-- **No-show handling:** Record and manage no-show reservations.
-- **Room availability:** Search available rooms based on dates, occupancy, and room requirements.
- 
----
+### 💰 Rate Plans & Booking Policies
+- Create and manage rate plans.
+- View rate plan version history.
+- Configure cancellation and deposit policies.
+- Manage property tax configurations.
+- Retain applicable policy snapshots with reservations.
 
-### 💳 2. Billing, Payments & Reports
+### 👤 Guest Management
+- Create, view, and update guest profiles.
+- Access guest reservation history.
+- Deactivate guest profiles.
+- Anonymize guest personal data.
 
-- **Folio management:** View folios and summaries, add charges, void items, and close or reopen folios.
-- **Payments:** Record payments, view payment summaries, and process refunds.
-- **Financial tracking:** Monitor financial transactions and billing activities.
-- **Reports:** Occupancy, revenue, arrivals, departures, in-house guests, room status, payments, refunds, cancelled reservations, housekeeping, and expenses.
- 
+### 🧾 Folios, Billing & Payments
+- View guest folios and billing summaries.
+- Add and void folio charges.
+- Close and reopen folios.
+- Record and review payments.
+- View payment summaries.
+- Record refunds.
 
-### 🏨 3. Properties, Rooms & Guests
+### 🧹 Housekeeping Management
+- Create and assign housekeeping tasks.
+- Start and complete housekeeping tasks.
+- Inspect rooms.
+- Track and update room-cleaning progress.
 
-- **Properties:** Create and update hotel details and settings, activate or deactivate properties, and manage property-level taxes and policies.
-- **Rooms & room types:** Create, update, activate, or deactivate rooms and room types, with available-room search.
-- **Guest profiles:** Add, update, and view guest profiles and booking history.
-- **Guest privacy:** Deactivate guest profiles or anonymize personal data.
- 
----
+### 📊 Reports & Dashboard
+- Occupancy and revenue reports.
+- Arrivals, departures, and current guest reports.
+- Room status reports.
+- Payment and refund reports.
+- Reservation cancellation reports.
+- Housekeeping and expense reports.
 
-### 💰 4. Rates & Policies
+### 🔐 User Management & Access Control
+- Secure user login, token refresh, and logout.
+- Create and manage user accounts.
+- Activate and deactivate users.
+- Assign roles and enforce role-based and permission-based authorization.
+- Restrict access based on assigned hotel properties.
 
-- **Rate plans:** Manage rate plans and view their version history.
-- **Taxes:** Configure and manage property-level tax settings.
-- **Cancellation policies:** Create, update, and activate or deactivate cancellation policies.
-- **Deposit policies:** Configure deposit requirements and payment conditions.
-- **Policy snapshots:** Preserve policy details on reservations to maintain historical consistency.
- 
----
+### ⚙️ Hotel Services & Expenses
+- Manage hotel services.
+- Record, view, and update expenses.
+- Void expenses when applicable.
 
-### 🧹 5. Hotel Operations
-
-- **Housekeeping:** Create and assign housekeeping tasks.
-- **Cleaning workflow:** Start and finish cleaning tasks and inspect rooms.
-- **Room readiness:** Track room conditions and inspection status.
-- **Services & expenses:** Manage hotel services and record, view, update, or cancel expenses.
-
- 
-
----
-
-### 🔐 6. Users & Access Management
-
-- **User management:** Create and manage user accounts, activate or deactivate users.
-- **Role management:** Manage roles and assign roles to users.
-- **Authentication:** Login, access-token refresh, and logout.
-- **Authorization:** Role- and permission-based access control.
-- **Property-level access:** Restrict users to their assigned hotel properties.
-
- 
-
----
-
-## 🖥️ Application UI
-
-HotelHup provides a responsive web interface for managing hotel operations through a centralized dashboard.
- 
+### 💻 Web Interface
+- Web-based interface for hotel management operations.
+- Dedicated screens for property management, reservations, rooms, guests, billing, housekeeping, and reporting.
  ## Architecture
 
 ### Backend
