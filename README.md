@@ -24,16 +24,15 @@ HotelHup covers the complete hotel guest journey, from reservation creation to c
 
 <p align="center">
   <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094354.png" width="48%" />
-  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094410.png" width="48%" />
-</p>
-
-<p align="center">
   <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094751.png" width="48%" />
-  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094848.png" width="48%" />
 </p>
 
 <p align="center">
+  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094848.png" width="48%" />
   <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094857.png" width="48%" />
+</p>
+
+<p align="center">
   <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094913.png" width="48%" />
 </p>
 
@@ -59,13 +58,7 @@ HotelHup covers the complete hotel guest journey, from reservation creation to c
 </p>
 
 <p align="center">
-  <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095319.png" width="48%" />
   <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095330.png" width="48%" />
-</p>
-
-<p align="center">
-  <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095452.png" width="48%" />
-  <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095522.png" width="48%" />
 </p>
 
 ---
@@ -158,4 +151,3 @@ HotelHup provides a responsive web interface for managing hotel operations throu
 <p align="center">
   <img src="docs/images/Application%20UI/Screenshot%202026-11-13%20101155.png" width="70%" />
 </p>
-
