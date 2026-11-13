@@ -222,3 +222,106 @@ HotelHup provides a responsive web interface for managing hotel operations throu
 ### ☁️ Deployment & Hosting
 - 🌐 MonsterASP
 - 🛢️ SQL Server Hosting
+
+## 🚀 How to Run
+
+### 📋 Prerequisites
+
+Make sure you have the following installed:
+
+- 💻 .NET SDK 8
+- 🛢️ SQL Server
+- 🟢 Node.js (Compatible with Angular 22)
+- 📦 npm 11.16.0
+- 🅰️ Angular CLI 22.0.8
+- 📝 Visual Studio 2022, JetBrains Rider, or VS Code
+
+### ⚙️ 1. Backend Setup
+
+**Restore Dependencies**
+
+```bash
+dotnet restore
+```
+
+**Build the Project**
+
+```bash
+dotnet build
+```
+
+**Run the Backend**
+
+```bash
+dotnet run --project HotelHup/HotelHup/HotelHup.API.csproj
+```
+
+**Swagger API Documentation**
+
+Once the backend is running, access Swagger at:
+
+```text
+https://localhost:<port>/swagger
+```
+
+### 🎨 2. Frontend Setup
+
+**Navigate to the Frontend Directory**
+
+```bash
+cd hotelhup_front
+```
+
+**Install Dependencies**
+
+```bash
+npm install
+```
+
+**Start the Angular Application**
+
+```bash
+npm start
+```
+
+Alternatively:
+
+```bash
+ng serve
+```
+
+The frontend will be available at:
+
+```text
+http://localhost:4200
+```
+
+### 🔧 3. Environment Configuration
+
+Before running the application, configure the following:
+
+**Backend Configuration:**
+- SQL Server Connection String.
+- JWT Secret Key.
+- JWT Issuer.
+- JWT Audience.
+- Hangfire Settings.
+
+**Frontend Configuration:**
+- Configure the Backend API Base URL in the Angular Environment Files.
+
+> ⚠️ Never commit sensitive configuration values or JWT secrets to GitHub.
+
+### 🏗️ 4. Build & Testing
+
+**Build Frontend for Production**
+
+```bash
+npm run build
+```
+
+**Run Frontend Tests**
+
+```bash
+npm test
+```
