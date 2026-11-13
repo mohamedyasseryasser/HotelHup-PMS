@@ -266,7 +266,7 @@ The system provides a centralized platform for managing:
 
 Make sure you have the following installed:
 
-- 💻 .NET SDK 8
+- 💻 .NET SDK 8 (or any SDK that supports `net8.0`)
 - 🛢️ SQL Server
 - 🟢 Node.js (Compatible with Angular 22)
 - 📦 npm 11.16.0
@@ -275,22 +275,28 @@ Make sure you have the following installed:
 
 ### ⚙️ 1. Backend Setup
 
+**Navigate to the Backend Directory**
+
+```bash
+cd HotelHup
+```
+
 **Restore Dependencies**
 
 ```bash
-dotnet restore
+dotnet restore HotelHup.API.csproj
 ```
 
 **Build the Project**
 
 ```bash
-dotnet build
+dotnet build HotelHup.API.csproj
 ```
 
 **Run the Backend**
 
 ```bash
-dotnet run --project HotelHup/HotelHup/HotelHup.API.csproj
+dotnet run --project HotelHup.API.csproj --launch-profile http
 ```
 
 **Swagger API Documentation**
@@ -298,16 +304,14 @@ dotnet run --project HotelHup/HotelHup/HotelHup.API.csproj
 Once the backend is running, access Swagger at:
 
 ```text
-https://localhost:<port>/swagger
+http://localhost:5169/swagger
 ```
 
 ### 🎨 2. Frontend Setup
 
 **Navigate to the Frontend Directory**
 
-```bash
-cd hotelhup_front
-```
+Open the frontend project directory containing `package.json` and `angular.json`.
 
 **Install Dependencies**
 
@@ -338,16 +342,40 @@ http://localhost:4200
 Before running the application, configure the following:
 
 **Backend Configuration:**
-- SQL Server Connection String.
-- JWT Secret Key.
-- JWT Issuer.
-- JWT Audience.
+
+- SQL Server Connection String (`ConnectionStrings:HotelHup`).
+- JWT Secret Key (`JWT:Key`).
+- JWT Issuer (`JWT:Issuer`).
+- JWT Audience (`JWT:Audience`).
+- JWT Token and Refresh Token settings.
 - Hangfire Settings.
+- Database Seeding (`Seed:Enabled`).
+
+**Database Configuration:**
+
+- The project uses Entity Framework Core migrations located in `HotelHup.INFRASTRUCTURE/Migrations/`.
+- The project contains 12 database migrations.
+- Migrations are applied during startup when `Seed:Enabled` is set to `true`.
+- Database seeding is disabled by default in the Development environment.
+- Make sure the SQL Server database is accessible and properly configured before running the backend.
 
 **Frontend Configuration:**
-- Configure the Backend API Base URL in the Angular Environment Files.
 
-> ⚠️ Never commit sensitive configuration values or JWT secrets to GitHub.
+- The development environment currently points to the hosted API:
+
+```text
+https://hotelhup.runasp.net/api/v1
+```
+
+- To connect the frontend to a locally running backend, update the API Base URL in the Angular environment configuration to:
+
+```text
+http://localhost:5169/api/v1
+```
+
+- Make sure the backend CORS configuration allows the frontend origin.
+
+> ⚠️ Never commit sensitive configuration values, database credentials, or JWT secrets to GitHub.
 
 ### 🏗️ 4. Build & Testing
 
@@ -357,10 +385,10 @@ Before running the application, configure the following:
 npm run build
 ```
 
-**Run Frontend Tests**
+**Run Frontend Unit Tests**
 
 ```bash
 npm test
 ```
 
-```
+The test command runs Angular unit tests using Vitest.
