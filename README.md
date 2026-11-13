@@ -6,7 +6,6 @@
 HotelHup is a web-based Hotel Property Management System (PMS) designed to help hotel teams manage their daily operations in one place.
 
 It brings together property, room, guest, reservation, folio, payment, housekeeping, and reporting management, reducing the need to rely on disconnected tools and manual workflows.
-
 ## ✨ Features
 
 ### 📅 1. Reservations & Front Desk
@@ -50,7 +49,7 @@ It brings together property, room, guest, reservation, folio, payment, housekeep
 - Retain applicable policy snapshots with reservations.
 
 ### 🔐 7. User Management & Access Control
-- Secure user login, token refresh, and logout.
+- User login, token refresh, and logout.
 - Create and manage user accounts.
 - Activate and deactivate users.
 - Assign roles and enforce role-based and permission-based authorization.
@@ -75,9 +74,20 @@ It brings together property, room, guest, reservation, folio, payment, housekeep
 - Record, view, and update expenses.
 - Void expenses when applicable.
 
-### 💻 11. Web Interface
-- Web-based interface for hotel management operations.
-- Dedicated screens for property management, reservations, rooms, guests, billing, housekeeping, and reporting.
+---
+
+## 🅰️ Angular Frontend Highlights
+
+- **Standalone Components:** Modular application structure using standalone components.
+- **Lazy Loading & Routing:** Feature-based navigation with lazy-loaded routes.
+- **Route Guards:** Authentication, role-based, and permission-based route protection.
+- **HTTP Interceptors:** JWT token attachment and centralized HTTP request handling.
+- **Angular Services & Dependency Injection:** Reusable services for API communication and application logic.
+- **Reactive Forms:** Dynamic forms with validation and error handling.
+- **Angular Signals:** Reactive state management and efficient UI updates.
+- **TypeScript Interfaces:** Strongly typed models and DTOs.
+- **OnPush Change Detection:** Optimized component change detection.
+  
 ### Backend
 - **API Layer:** ASP.NET Core controllers expose the application endpoints.
 - **Application Layer:** Application services, DTOs, repository/service interfaces, and permission definitions.
