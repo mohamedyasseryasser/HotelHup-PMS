@@ -7,7 +7,23 @@ HotelHup is a web-based Hotel Property Management System (PMS) designed to help 
 
 It brings together property, room, guest, reservation, folio, payment, housekeeping, and reporting management, reducing the need to rely on disconnected tools and manual workflows.
 
+## 📌 Project Overview
+
+HotelHup is designed for hotel owners and operational teams, including administrators, front-desk staff, and housekeeping staff.
+
+The system provides a centralized platform for managing:
+
+- **Multi-Property Management:** Manage operations across one or more hotel properties.
+- **Reservations & Room Availability:** Search availability and manage guest reservations.
+- **Guest Management:** Maintain guest profiles and reservation history.
+- **Front Desk Operations:** Handle guest check-in, check-out, and room assignments.
+- **Billing & Payments:** Manage guest folios, charges, payments, and refunds.
+- **Housekeeping:** Create tasks, inspect rooms, and track cleaning progress.
+- **Operational Reports:** Monitor occupancy, revenue, reservations, and daily hotel activities.
+
 ---
+
+ 
 
 ## ✨ Features
 
