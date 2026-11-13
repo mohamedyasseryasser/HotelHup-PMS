@@ -19,28 +19,7 @@ HotelHup covers the complete hotel guest journey, from reservation creation to c
 - **Guest stay operations:** Check-in, check-out, room assignment and release, checkout extension, and early checkout.
 - **No-show handling:** Record and manage no-show reservations.
 - **Room availability:** Search available rooms based on dates, occupancy, and room requirements.
-
-**Screenshots:**
-
-<p align="center">
-  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094354.png" width="48%" />
-</p>
-
-<p align="center">
-  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094504.png" width="48%" />
-  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094751.png" width="48%" />
-</p>
-
-<p align="center">
-  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094840.png" width="48%" />
-  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094848.png" width="48%" />
-</p>
-
-<p align="center">
-  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094857.png" width="48%" />
-  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094913.png" width="48%" />
-</p>
-
+ 
 ---
 
 ### 💳 2. Billing, Payments & Reports
@@ -49,24 +28,7 @@ HotelHup covers the complete hotel guest journey, from reservation creation to c
 - **Payments:** Record payments, view payment summaries, and process refunds.
 - **Financial tracking:** Monitor financial transactions and billing activities.
 - **Reports:** Occupancy, revenue, arrivals, departures, in-house guests, room status, payments, refunds, cancelled reservations, housekeeping, and expenses.
-
-**Screenshots:**
-
-<p align="center">
-  <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095049.png" width="48%" />
-  <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095056.png" width="48%" />
-</p>
-
-<p align="center">
-  <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095139.png" width="48%" />
-  <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095308.png" width="48%" />
-</p>
-
-<p align="center">
-  <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095330.png" width="48%" />
-</p>
-
----
+ 
 
 ### 🏨 3. Properties, Rooms & Guests
 
@@ -74,19 +36,7 @@ HotelHup covers the complete hotel guest journey, from reservation creation to c
 - **Rooms & room types:** Create, update, activate, or deactivate rooms and room types, with available-room search.
 - **Guest profiles:** Add, update, and view guest profiles and booking history.
 - **Guest privacy:** Deactivate guest profiles or anonymize personal data.
-
-**Screenshots:**
-
-<p align="center">
-  <img src="docs/images/Properties,%20Rooms%20%26%20Guests/Screenshot%202026-11-13%20100029.png" width="48%" />
-  <img src="docs/images/Properties,%20Rooms%20%26%20Guests/Screenshot%202026-11-13%20100054.png" width="48%" />
-</p>
-
-<p align="center">
-  <img src="docs/images/Properties,%20Rooms%20%26%20Guests/Screenshot%202026-11-13%20100126.png" width="48%" />
-  <img src="docs/images/Properties,%20Rooms%20%26%20Guests/Screenshot%202026-11-13%20100225.png" width="48%" />
-</p>
-
+ 
 ---
 
 ### 💰 4. Rates & Policies
@@ -96,18 +46,7 @@ HotelHup covers the complete hotel guest journey, from reservation creation to c
 - **Cancellation policies:** Create, update, and activate or deactivate cancellation policies.
 - **Deposit policies:** Configure deposit requirements and payment conditions.
 - **Policy snapshots:** Preserve policy details on reservations to maintain historical consistency.
-
-**Screenshots:**
-
-<p align="center">
-  <img src="docs/images/Rates%20%26%20Policies/Screenshot%202026-11-13%20100326.png" width="48%" />
-  <img src="docs/images/Rates%20%26%20Policies/Screenshot%202026-11-13%20100343.png" width="48%" />
-</p>
-
-<p align="center">
-  <img src="docs/images/Rates%20%26%20Policies/Screenshot%202026-11-13%20100432.png" width="48%" />
-</p>
-
+ 
 ---
 
 ### 🧹 5. Hotel Operations
@@ -117,12 +56,7 @@ HotelHup covers the complete hotel guest journey, from reservation creation to c
 - **Room readiness:** Track room conditions and inspection status.
 - **Services & expenses:** Manage hotel services and record, view, update, or cancel expenses.
 
-**Screenshots:**
-
-<p align="center">
-  <img src="docs/images/Hotel%20Operations/Screenshot%202026-11-13%20100643.png" width="48%" />
-  <img src="docs/images/Hotel%20Operations/Screenshot%202026-11-13%20100656.png" width="48%" />
-</p>
+ 
 
 ---
 
@@ -134,29 +68,14 @@ HotelHup covers the complete hotel guest journey, from reservation creation to c
 - **Authorization:** Role- and permission-based access control.
 - **Property-level access:** Restrict users to their assigned hotel properties.
 
-**Screenshots:**
-
-<p align="center">
-  <img src="docs/images/Users%20%26%20Access/Screenshot%202026-11-13%20100910.png" width="70%" />
-</p>
+ 
 
 ---
 
 ## 🖥️ Application UI
 
 HotelHup provides a responsive web interface for managing hotel operations through a centralized dashboard.
-
-**Screenshots:**
-
-<p align="center">
-  <img src="docs/images/Application%20UI/Screenshot%202026-11-13%20101105.png" width="48%" />
-  <img src="docs/images/Application%20UI/Screenshot%202026-11-13%20101143.png" width="48%" />
-</p>
-
-<p align="center">
-  <img src="docs/images/Application%20UI/Screenshot%202026-11-13%20101155.png" width="70%" />
-</p>
-
+ 
  ## Architecture
 
 ### Backend
