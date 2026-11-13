@@ -236,6 +236,28 @@ Make sure you have the following installed:
 - 🅰️ Angular CLI 22.0.8
 - 📝 Visual Studio 2022, JetBrains Rider, or VS Code
 
+ ## Architecture
+
+### Backend
+- **API Layer:** ASP.NET Core controllers expose the application endpoints.
+- **Application Layer:** Application services, DTOs, repository/service interfaces, and permission definitions.
+- **Core Layer:** Core entities and enums, including users, roles, permissions, properties, reservations, and refresh tokens.
+- **Infrastructure Layer:** Repository implementations and data-access integrations.
+
+### Frontend
+- **Components:** Angular screens and UI components.
+- **Models:** TypeScript models and API data contracts.
+- **Services:** API communication, authentication, and permission-related services.
+- **Guards:** Route protection for authentication, roles, and permissions.
+- **Interceptors:** Attach Bearer access tokens to API requests and handle token refresh.
+
+## Authentication & Authorization
+- JWT Bearer authentication.
+- Refresh-token renewal with token rotation and revocation on logout.
+- Role-Based Access Control (RBAC) using ASP.NET Identity roles.
+- Permission-Based Authorization using application permissions and authorization policies.
+- Property-scoped access checks for property-bound users, verified in reservation workflows.
+
 ### ⚙️ 1. Backend Setup
 
 **Restore Dependencies**
