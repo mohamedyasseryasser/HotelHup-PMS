@@ -1,3 +1,4 @@
+
 # 🏨 HotelHup
 
 ### Hotel Property Management System
@@ -113,7 +114,11 @@ It brings together property, room, guest, reservation, folio, payment, housekeep
 ### 🧾 Billing & Payments
 
 <p align="center" dir="ltr">
-  <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095139.png" width="100%" alt="Billing and Payments Screenshot" />
+  <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095139.png" width="100%" alt="Billing and Payments Screenshot 1" />
+</p>
+
+<p align="center" dir="ltr">
+  <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20171619.png" width="100%" alt="Billing and Payments Screenshot 2" />
 </p>
 
 ---
@@ -247,3 +252,4 @@ Make sure you have the following installed:
 
 ```bash
 dotnet restore
+```
