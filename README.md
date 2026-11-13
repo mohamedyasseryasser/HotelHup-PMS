@@ -157,6 +157,28 @@ HotelHup provides a responsive web interface for managing hotel operations throu
   <img src="docs/images/Application%20UI/Screenshot%202026-11-13%20101155.png" width="70%" />
 </p>
 
+ ## Architecture
+
+### Backend
+- **API Layer:** ASP.NET Core controllers expose the application endpoints.
+- **Application Layer:** Application services, DTOs, repository/service interfaces, and permission definitions.
+- **Core Layer:** Core entities and enums, including users, roles, permissions, properties, reservations, and refresh tokens.
+- **Infrastructure Layer:** Repository implementations and data-access integrations.
+
+### Frontend
+- **Components:** Angular screens and UI components.
+- **Models:** TypeScript models and API data contracts.
+- **Services:** API communication, authentication, and permission-related services.
+- **Guards:** Route protection for authentication, roles, and permissions.
+- **Interceptors:** Attach Bearer access tokens to API requests and handle token refresh.
+
+## Authentication & Authorization
+- JWT Bearer authentication.
+- Refresh-token renewal with token rotation and revocation on logout.
+- Role-Based Access Control (RBAC) using ASP.NET Identity roles.
+- Permission-Based Authorization using application permissions and authorization policies.
+- Property-scoped access checks for property-bound users, verified in reservation workflows.
+
 ## 🛠️ Technologies & Tools
 
 ### ⚙️ Backend
@@ -222,28 +244,6 @@ HotelHup provides a responsive web interface for managing hotel operations throu
 ### ☁️ Deployment & Hosting
 - 🌐 MonsterASP
 - 🛢️ SQL Server Hosting
-
- ## Architecture
-
-### Backend
-- **API Layer:** ASP.NET Core controllers expose the application endpoints.
-- **Application Layer:** Application services, DTOs, repository/service interfaces, and permission definitions.
-- **Core Layer:** Core entities and enums, including users, roles, permissions, properties, reservations, and refresh tokens.
-- **Infrastructure Layer:** Repository implementations and data-access integrations.
-
-### Frontend
-- **Components:** Angular screens and UI components.
-- **Models:** TypeScript models and API data contracts.
-- **Services:** API communication, authentication, and permission-related services.
-- **Guards:** Route protection for authentication, roles, and permissions.
-- **Interceptors:** Attach Bearer access tokens to API requests and handle token refresh.
-
-## Authentication & Authorization
-- JWT Bearer authentication.
-- Refresh-token renewal with token rotation and revocation on logout.
-- Role-Based Access Control (RBAC) using ASP.NET Identity roles.
-- Permission-Based Authorization using application permissions and authorization policies.
-- Property-scoped access checks for property-bound users, verified in reservation workflows.
 
 ## 🚀 How to Run
 
