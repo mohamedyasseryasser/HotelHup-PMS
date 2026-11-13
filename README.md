@@ -1,4 +1,3 @@
-
 # 🏨 HotelHup
 
 ### Hotel Property Management System
@@ -8,32 +7,7 @@ HotelHup is a web-based Hotel Property Management System (PMS) designed to help 
 It brings together property, room, guest, reservation, folio, payment, housekeeping, and reporting management, reducing the need to rely on disconnected tools and manual workflows.
 
 ---
-## 📸 Application Screenshots
 
-### 📅 Reservations & Front Desk
-
-<p align="center">
-  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094354.png" width="32%" />
-  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094504.png" width="32%" />
-  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094751.png" width="32%" />
-</p>
-
-<p align="center">
-  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094840.png" width="32%" />
-  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094848.png" width="32%" />
-  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094857.png" width="32%" />
-</p>
-
-<p align="center">
-  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094913.png" width="32%" />
-</p>
-
-### 🧾 Billing & Payments
-
-<p align="center">
-  <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095139.png" width="60%" />
-</p>
----
 ## ✨ Features
 
 ### 📅 1. Reservations & Front Desk
@@ -104,6 +78,46 @@ It brings together property, room, guest, reservation, folio, payment, housekeep
 
 ---
 
+## 📸 Application Screenshots
+
+### 📅 Reservations & Front Desk
+
+<p align="center" dir="ltr">
+  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094354.png" width="100%" alt="Reservations Screenshot 1" />
+</p>
+
+<p align="center" dir="ltr">
+  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094504.png" width="100%" alt="Reservations Screenshot 2" />
+</p>
+
+<p align="center" dir="ltr">
+  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094751.png" width="100%" alt="Reservations Screenshot 3" />
+</p>
+
+<p align="center" dir="ltr">
+  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094840.png" width="100%" alt="Reservations Screenshot 4" />
+</p>
+
+<p align="center" dir="ltr">
+  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094848.png" width="100%" alt="Reservations Screenshot 5" />
+</p>
+
+<p align="center" dir="ltr">
+  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094857.png" width="100%" alt="Reservations Screenshot 6" />
+</p>
+
+<p align="center" dir="ltr">
+  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094913.png" width="100%" alt="Reservations Screenshot 7" />
+</p>
+
+### 🧾 Billing & Payments
+
+<p align="center" dir="ltr">
+  <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095139.png" width="100%" alt="Billing and Payments Screenshot" />
+</p>
+
+---
+
 ## 🅰️ Angular Frontend Highlights
 
 - **Standalone Components:** Modular application structure using standalone components.
@@ -115,7 +129,11 @@ It brings together property, room, guest, reservation, folio, payment, housekeep
 - **Angular Signals:** Reactive state management and efficient UI updates.
 - **TypeScript Interfaces:** Strongly typed models and DTOs.
 - **OnPush Change Detection:** Optimized component change detection.
-  
+
+---
+
+## 🏗️ Architecture & Project Structure
+
 ### Backend
 - **API Layer:** ASP.NET Core controllers expose the application endpoints.
 - **Application Layer:** Application services, DTOs, repository/service interfaces, and permission definitions.
@@ -129,12 +147,17 @@ It brings together property, room, guest, reservation, folio, payment, housekeep
 - **Guards:** Route protection for authentication, roles, and permissions.
 - **Interceptors:** Attach Bearer access tokens to API requests and handle token refresh.
 
-## Authentication & Authorization
+---
+
+## 🔐 Authentication & Authorization
+
 - JWT Bearer authentication.
 - Refresh-token renewal with token rotation and revocation on logout.
 - Role-Based Access Control (RBAC) using ASP.NET Identity roles.
 - Permission-Based Authorization using application permissions and authorization policies.
 - Property-scoped access checks for property-bound users, verified in reservation workflows.
+
+---
 
 ## 🛠️ Technologies & Tools
 
@@ -177,6 +200,7 @@ It brings together property, room, guest, reservation, folio, payment, housekeep
 - 🔐 Role-Based & Policy-Based Authorization
 
 ### 🧪 Testing
+
 **Backend:**
 - 🧪 NUnit 5
 - 🎭 Moq 4.21
@@ -202,6 +226,8 @@ It brings together property, room, guest, reservation, folio, payment, housekeep
 - 🌐 MonsterASP
 - 🛢️ SQL Server Hosting
 
+---
+
 ## 🚀 How to Run
 
 ### 📋 Prerequisites
@@ -221,86 +247,3 @@ Make sure you have the following installed:
 
 ```bash
 dotnet restore
-```
-
-**Build the Project**
-
-```bash
-dotnet build
-```
-
-**Run the Backend**
-
-```bash
-dotnet run --project HotelHup/HotelHup/HotelHup.API.csproj
-```
-
-**Swagger API Documentation**
-
-Once the backend is running, access Swagger at:
-
-```text
-https://localhost:<port>/swagger
-```
-
-### 🎨 2. Frontend Setup
-
-**Navigate to the Frontend Directory**
-
-```bash
-cd hotelhup_front
-```
-
-**Install Dependencies**
-
-```bash
-npm install
-```
-
-**Start the Angular Application**
-
-```bash
-npm start
-```
-
-Alternatively:
-
-```bash
-ng serve
-```
-
-The frontend will be available at:
-
-```text
-http://localhost:4200
-```
-
-### 🔧 3. Environment Configuration
-
-Before running the application, configure the following:
-
-**Backend Configuration:**
-- SQL Server Connection String.
-- JWT Secret Key.
-- JWT Issuer.
-- JWT Audience.
-- Hangfire Settings.
-
-**Frontend Configuration:**
-- Configure the Backend API Base URL in the Angular Environment Files.
-
-> ⚠️ Never commit sensitive configuration values or JWT secrets to GitHub.
-
-### 🏗️ 4. Build & Testing
-
-**Build Frontend for Production**
-
-```bash
-npm run build
-```
-
-**Run Frontend Tests**
-
-```bash
-npm test
-```
