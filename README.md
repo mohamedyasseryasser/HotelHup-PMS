@@ -6,6 +6,34 @@
 HotelHup is a web-based Hotel Property Management System (PMS) designed to help hotel teams manage their daily operations in one place.
 
 It brings together property, room, guest, reservation, folio, payment, housekeeping, and reporting management, reducing the need to rely on disconnected tools and manual workflows.
+
+---
+## 📸 Application Screenshots
+
+### 📅 Reservations & Front Desk
+
+<p align="center">
+  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094354.png" width="32%" />
+  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094504.png" width="32%" />
+  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094751.png" width="32%" />
+</p>
+
+<p align="center">
+  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094840.png" width="32%" />
+  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094848.png" width="32%" />
+  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094857.png" width="32%" />
+</p>
+
+<p align="center">
+  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094913.png" width="32%" />
+</p>
+
+### 🧾 Billing & Payments
+
+<p align="center">
+  <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095139.png" width="60%" />
+</p>
+---
 ## ✨ Features
 
 ### 📅 1. Reservations & Front Desk
