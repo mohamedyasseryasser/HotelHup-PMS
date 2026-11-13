@@ -223,19 +223,6 @@ HotelHup provides a responsive web interface for managing hotel operations throu
 - 🌐 MonsterASP
 - 🛢️ SQL Server Hosting
 
-## 🚀 How to Run
-
-### 📋 Prerequisites
-
-Make sure you have the following installed:
-
-- 💻 .NET SDK 8
-- 🛢️ SQL Server
-- 🟢 Node.js (Compatible with Angular 22)
-- 📦 npm 11.16.0
-- 🅰️ Angular CLI 22.0.8
-- 📝 Visual Studio 2022, JetBrains Rider, or VS Code
-
  ## Architecture
 
 ### Backend
@@ -257,6 +244,19 @@ Make sure you have the following installed:
 - Role-Based Access Control (RBAC) using ASP.NET Identity roles.
 - Permission-Based Authorization using application permissions and authorization policies.
 - Property-scoped access checks for property-bound users, verified in reservation workflows.
+
+## 🚀 How to Run
+
+### 📋 Prerequisites
+
+Make sure you have the following installed:
+
+- 💻 .NET SDK 8
+- 🛢️ SQL Server
+- 🟢 Node.js (Compatible with Angular 22)
+- 📦 npm 11.16.0
+- 🅰️ Angular CLI 22.0.8
+- 📝 Visual Studio 2022, JetBrains Rider, or VS Code
 
 ### ⚙️ 1. Backend Setup
 
