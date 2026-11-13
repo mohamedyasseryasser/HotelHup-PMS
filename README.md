@@ -7,15 +7,9 @@ HotelHup is a web-based Hotel Property Management System (PMS) designed to help 
 
 It brings together property, room, guest, reservation, folio, payment, housekeeping, and reporting management, reducing the need to rely on disconnected tools and manual workflows.
 
----
 ## ✨ Features
 
-### 🏨 Property Management
-- Create and update hotel property records.
-- Activate and deactivate properties.
-- Configure property settings and taxes.
-
-### 📅 Reservations & Front Desk
+### 📅 1. Reservations & Front Desk
 - Search room availability based on check-in and check-out dates.
 - Create, update, confirm, and cancel reservations.
 - View reservation details and status history.
@@ -24,25 +18,7 @@ It brings together property, room, guest, reservation, folio, payment, housekeep
 - Process guest check-ins and check-outs.
 - Handle early checkouts and checkout extensions.
 
-### 🛏️ Room & Room Type Management
-- Create and manage rooms and room types.
-- Update room information and configurations.
-- Activate and deactivate rooms and room types.
-
-### 💰 Rate Plans & Booking Policies
-- Create and manage rate plans.
-- View rate plan version history.
-- Configure cancellation and deposit policies.
-- Manage property tax configurations.
-- Retain applicable policy snapshots with reservations.
-
-### 👤 Guest Management
-- Create, view, and update guest profiles.
-- Access guest reservation history.
-- Deactivate guest profiles.
-- Anonymize guest personal data.
-
-### 🧾 Folios, Billing & Payments
+### 🧾 2. Folios, Billing & Payments
 - View guest folios and billing summaries.
 - Add and void folio charges.
 - Close and reopen folios.
@@ -50,13 +26,43 @@ It brings together property, room, guest, reservation, folio, payment, housekeep
 - View payment summaries.
 - Record refunds.
 
-### 🧹 Housekeeping Management
+### 🏨 3. Property Management
+- Create and update hotel property records.
+- Activate and deactivate properties.
+- Configure property settings and taxes.
+
+### 🛏️ 4. Room & Room Type Management
+- Create and manage rooms and room types.
+- Update room information and configurations.
+- Activate and deactivate rooms and room types.
+
+### 👤 5. Guest Management
+- Create, view, and update guest profiles.
+- Access guest reservation history.
+- Deactivate guest profiles.
+- Anonymize guest personal data.
+
+### 💰 6. Rate Plans & Booking Policies
+- Create and manage rate plans.
+- View rate plan version history.
+- Configure cancellation and deposit policies.
+- Manage property tax configurations.
+- Retain applicable policy snapshots with reservations.
+
+### 🔐 7. User Management & Access Control
+- Secure user login, token refresh, and logout.
+- Create and manage user accounts.
+- Activate and deactivate users.
+- Assign roles and enforce role-based and permission-based authorization.
+- Restrict access based on assigned hotel properties.
+
+### 🧹 8. Housekeeping Management
 - Create and assign housekeeping tasks.
 - Start and complete housekeeping tasks.
 - Inspect rooms.
 - Track and update room-cleaning progress.
 
-### 📊 Reports & Dashboard
+### 📊 9. Reports & Dashboard
 - Occupancy and revenue reports.
 - Arrivals, departures, and current guest reports.
 - Room status reports.
@@ -64,23 +70,14 @@ It brings together property, room, guest, reservation, folio, payment, housekeep
 - Reservation cancellation reports.
 - Housekeeping and expense reports.
 
-### 🔐 User Management & Access Control
-- Secure user login, token refresh, and logout.
-- Create and manage user accounts.
-- Activate and deactivate users.
-- Assign roles and enforce role-based and permission-based authorization.
-- Restrict access based on assigned hotel properties.
-
-### ⚙️ Hotel Services & Expenses
+### ⚙️ 10. Hotel Services & Expenses
 - Manage hotel services.
 - Record, view, and update expenses.
 - Void expenses when applicable.
 
-### 💻 Web Interface
+### 💻 11. Web Interface
 - Web-based interface for hotel management operations.
 - Dedicated screens for property management, reservations, rooms, guests, billing, housekeeping, and reporting.
- ## Architecture
-
 ### Backend
 - **API Layer:** ASP.NET Core controllers expose the application endpoints.
 - **Application Layer:** Application services, DTOs, repository/service interfaces, and permission definitions.
