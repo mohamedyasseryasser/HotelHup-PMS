@@ -28,12 +28,7 @@ HotelHup covers the complete hotel guest journey, from reservation creation to c
 </p>
 
 <p align="center">
-  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094504.png" width="48%" />
   <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094751.png" width="48%" />
-</p>
-
-<p align="center">
-  <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094840.png" width="48%" />
   <img src="docs/images/Reservations%20%26%20Front%20Desk/Screenshot%202026-11-13%20094848.png" width="48%" />
 </p>
 
@@ -54,23 +49,18 @@ HotelHup covers the complete hotel guest journey, from reservation creation to c
 **Screenshots:**
 
 <p align="center">
-  <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095031.png" width="48%" />
   <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095049.png" width="48%" />
-</p>
-
-<p align="center">
   <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095056.png" width="48%" />
+</p>
+
+<p align="center">
   <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095139.png" width="48%" />
-</p>
-
-<p align="center">
   <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095308.png" width="48%" />
-  <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095319.png" width="48%" />
 </p>
 
 <p align="center">
+  <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095319.png" width="48%" />
   <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095330.png" width="48%" />
-  <img src="docs/images/Billing,%20Payments%20%26%20Reports/Screenshot%202026-11-13%20095349.png" width="48%" />
 </p>
 
 <p align="center">
@@ -168,75 +158,4 @@ HotelHup provides a responsive web interface for managing hotel operations throu
 <p align="center">
   <img src="docs/images/Application%20UI/Screenshot%202026-11-13%20101155.png" width="70%" />
 </p>
-
----
-
-## 🛠️ Technologies Used
-
-### Backend
-- C#
-- ASP.NET Core Web API
-- Entity Framework Core
-- SQL Server
-- ASP.NET Core Identity
-- JWT Authentication
-- Clean Architecture
-
-### Frontend
-- Angular
-- TypeScript
-- HTML5
-- CSS3
-- Bootstrap
-
-### Tools & Practices
-- Git & GitHub
-- Swagger / OpenAPI
-- Postman
-- RESTful APIs
-- Repository Pattern
-- Dependency Injection
-- SOLID Principles
-
----
-
-## 📂 Project Structure
-
-```text
-HotelHup/
-│
-├── hotelhup_back/
-│   ├── CORE/
-│   ├── APPLICATION/
-│   ├── INFRASTRUCTURE/
-│   └── API/
-│
-├── hotelhup_front/
-│
-├── docs/
-│   └── images/
-│       ├── Application UI/
-│       ├── Billing, Payments & Reports/
-│       ├── Hotel Operations/
-│       ├── Properties, Rooms & Guests/
-│       ├── Rates & Policies/
-│       ├── Reservations & Front Desk/
-│       └── Users & Access/
-│
-└── README.md
-```
-
----
-
-## 🎯 Project Goal
-
-HotelHup was developed as a full-stack portfolio project to demonstrate the design and implementation of a real-world hotel management system, covering business workflows, backend architecture, database management, authentication, authorization, and frontend development.
-
----
-
-## 🔗 Project Links
-
-- **GitHub Repository:** [HotelHup PMS](https://github.com/mohamedyasseryasser/HotelHup-PMS)
-- **Live Backend API:** [HotelHup API](http://hotelhup.runasp.net/)
-- **API Documentation:** [Swagger UI](http://hotelhup.runasp.net/swagger)
 
